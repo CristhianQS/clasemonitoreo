@@ -5,13 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Panel Clases Bíblicas UPeU</title>
     
-    <!-- Chart.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
@@ -41,11 +36,10 @@
             background: linear-gradient(135deg, #e8f0f7 0%, #f5f8fb 100%);
             color: #2c3e50;
             min-height: 100vh;
-            padding: 20px;
-            position: relative;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Loading Spinner */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -80,14 +74,13 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Status Bar */
         .status-bar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             background: white;
-            padding: 12px 20px;
+            padding: 12px 30px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             z-index: 1000;
             display: flex;
@@ -131,17 +124,16 @@
         }
 
         .container {
-            max-width: 1600px;
-            margin: 70px auto 0;
+            width: 100%;
+            max-width: 100%;
+            margin: 60px 0 0 0;
             background: white;
-            border-radius: 24px;
             box-shadow: 0 25px 70px rgba(0, 56, 101, 0.15);
-            overflow: hidden;
         }
 
         header {
             background: linear-gradient(135deg, #003865 0%, #005a9e 50%, #0077cc 100%);
-            padding: 50px 30px;
+            padding: 50px 40px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -191,18 +183,20 @@
         .header-stats {
             display: flex;
             justify-content: center;
-            gap: 40px;
+            gap: 60px;
             margin-top: 30px;
             position: relative;
             z-index: 1;
+            flex-wrap: wrap;
         }
 
         .header-stat {
             text-align: center;
+            min-width: 150px;
         }
 
         .header-stat-number {
-            font-size: 36px;
+            font-size: 42px;
             font-weight: 800;
             color: white;
             text-shadow: 0 2px 10px rgba(0,0,0,0.3);
@@ -222,7 +216,7 @@
             flex-wrap: wrap;
             gap: 15px;
             margin: 35px 0;
-            padding: 0 20px;
+            padding: 0 30px;
         }
 
         .faculty-btn {
@@ -269,8 +263,9 @@
         }
 
         .content-section {
-            padding: 40px 30px;
+            padding: 40px 30px 60px;
             min-height: 450px;
+            width: 100%;
         }
 
         .faculty-title {
@@ -292,10 +287,10 @@
 
         .chart-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
             gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 100%;
         }
 
         .chart-box {
@@ -430,13 +425,13 @@
             z-index: 1;
         }
 
-        /* Sección mejorada para INICIO */
         .overview-section {
             margin-bottom: 40px;
             padding: 30px;
             background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
             border-radius: 20px;
             border: 2px solid #e9ecef;
+            width: 100%;
         }
 
         .section-header {
@@ -446,6 +441,7 @@
             margin-bottom: 25px;
             padding-bottom: 15px;
             border-bottom: 3px solid #003865;
+            flex-wrap: wrap;
         }
 
         .section-icon {
@@ -478,7 +474,7 @@
 
         .legend-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 12px;
             margin-bottom: 25px;
         }
@@ -523,7 +519,7 @@
 
         .docentes-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 12px;
         }
 
@@ -568,7 +564,7 @@
 
         .clases-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 12px;
         }
 
@@ -630,71 +626,6 @@
             font-weight: 500;
         }
 
-        @media (max-width: 768px) {
-            .status-bar {
-                flex-direction: column;
-                gap: 10px;
-                padding: 15px;
-            }
-
-            .container {
-                margin-top: 120px;
-            }
-
-            h1 {
-                font-size: 28px;
-            }
-
-            .header-stats {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .chart-content {
-                flex-direction: column;
-            }
-            
-            .chart-image-container {
-                flex: 0 0 auto;
-                width: 100%;
-            }
-
-            .chart-value-display {
-                flex: 0 0 auto;
-                width: 100%;
-            }
-
-            .chart-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .legend-grid,
-            .docentes-grid,
-            .clases-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .chart-box {
-            animation: fadeIn 0.6s ease-out backwards;
-        }
-
-        .chart-box:nth-child(1) { animation-delay: 0.1s; }
-        .chart-box:nth-child(2) { animation-delay: 0.2s; }
-        .chart-box:nth-child(3) { animation-delay: 0.3s; }
-        .chart-box:nth-child(4) { animation-delay: 0.4s; }
-
         .notification {
             position: fixed;
             top: 80px;
@@ -735,10 +666,86 @@
             font-weight: 500;
             color: var(--gray-700);
         }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chart-box {
+            animation: fadeIn 0.6s ease-out backwards;
+        }
+
+        .chart-box:nth-child(1) { animation-delay: 0.1s; }
+        .chart-box:nth-child(2) { animation-delay: 0.2s; }
+        .chart-box:nth-child(3) { animation-delay: 0.3s; }
+        .chart-box:nth-child(4) { animation-delay: 0.4s; }
+
+        @media (max-width: 1200px) {
+            .chart-grid {
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .status-bar {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .container {
+                margin-top: 110px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .header-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .chart-content {
+                flex-direction: column;
+            }
+            
+            .chart-image-container {
+                width: 100%;
+            }
+
+            .chart-value-display {
+                width: 100%;
+            }
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .legend-grid,
+            .docentes-grid,
+            .clases-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-bar {
+                padding: 0 15px;
+            }
+
+            .content-section {
+                padding: 30px 15px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div>
             <div class="spinner"></div>
@@ -746,9 +753,8 @@
         </div>
     </div>
 
-    <!-- Status Bar -->
     <div class="status-bar">
-        <div style="display: flex; gap: 20px;">
+        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
             <div class="status-item">
                 <div class="status-dot online"></div>
                 <span><strong>Estado:</strong> Conectado</span>
@@ -817,14 +823,10 @@
     </div>
 
     <script>
-        // ============================================
-        // CONFIGURACIÓN GENERAL
-        // ============================================
         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQiFXjYjAygAByVbJwIoP2gY9mdjr-_tsknfT37ki2XLs20pZ6nV1-tXeivgO5wN9ndhvsYjobjh7fU/pub?gid=1727939500&single=true&output=csv';
         const TEXTO_TOTAL = "Total Participantes";
-        const UPDATE_INTERVAL = 60000; // 1 minuto
+        const UPDATE_INTERVAL = 60000;
 
-        // Configuraciones (mantienen las mismas del código original)
         const escuelasInicio = [
             { filaNombre: 24, filaValor: 2 }, { filaNombre: 25, filaValor: 3 },
             { filaNombre: 26, filaValor: 4 }, { filaNombre: 27, filaValor: 5 },
@@ -845,12 +847,9 @@
             { filaNombre: 33, filaValor: 11 }
         ];
 
-        // Bautizados FIA (B55-B58 para nombres, A55-A58 para valores)
         const bautizadosFIA = [
-            { filaNombre: 55, filaValor: 55 }, // B55, A55
-            { filaNombre: 47, filaValor: 47 }, // B56, A56
-            { filaNombre: 60, filaValor: 60 }, // B57, A57
-            { filaNombre: 61, filaValor: 61 }  // B58, A58
+            { filaNombre: 55, filaValor: 55 }, { filaNombre: 47, filaValor: 47 },
+            { filaNombre: 60, filaValor: 60 }, { filaNombre: 61, filaValor: 61 }
         ];
 
         const escuelasFCE = [
@@ -858,11 +857,9 @@
             { filaNombre: 26, filaValor: 4 }, { filaNombre: 35, filaValor: 13 }
         ];
 
-        // Bautizados FCE (B60-B62 para nombres, A60-A62 para valores)
         const bautizadosFCE = [
-            { filaNombre: 60, filaValor: 60 }, // B60, A60
-            { filaNombre: 61, filaValor: 61 }, // B61, A61
-            { filaNombre: 62, filaValor: 62 }  // B62, A62
+            { filaNombre: 60, filaValor: 60 }, { filaNombre: 61, filaValor: 61 },
+            { filaNombre: 62, filaValor: 62 }
         ];
 
         const escuelasFACIHED = [
@@ -871,10 +868,8 @@
             { filaNombre: 38, filaValor: 16 }, { filaNombre: 41, filaValor: 19 }
         ];
 
-        // Bautizados FACIHED (B64-B65 para nombres, A64-A65 para valores)
         const bautizadosFACIHED = [
-            { filaNombre: 64, filaValor: 64 }, // B64, A64
-            { filaNombre: 65, filaValor: 65 }  // B65, A65
+            { filaNombre: 64, filaValor: 64 }, { filaNombre: 65, filaValor: 65 }
         ];
 
         const escuelasFCS = [
@@ -882,9 +877,8 @@
             { filaNombre: 28, filaValor: 6 }
         ];
 
-        // Bautizados FCS (B67 para nombre, A67 para valor)
         const bautizadosFCS = [
-            { filaNombre: 67, filaValor: 67 }  // B67, A67
+            { filaNombre: 67, filaValor: 67 }
         ];
 
         const docentesConfig = Array.from({length: 54}, (_, i) => ({
@@ -926,9 +920,6 @@
         let chartInstances = {};
         let updateTimer = null;
 
-        // ============================================
-        // FUNCIONES DE DATOS
-        // ============================================
         function obtenerDocentes(dataCache) {
             const docentes = [];
             docentesConfig.forEach(config => {
@@ -1106,51 +1097,243 @@
             }).filter(esc => esc.nombre !== 'Sin nombre' && esc.nombre !== '');
 
             if (facKey === 'INICIO') {
-                const canvasId = 'chart-inicio-consolidado';
+                renderInicio(grid, escuelasConDatos);
+            } else {
+                renderFacultad(grid, faculty, escuelasConDatos, facKey);
+            }
+        }
+
+        function renderInicio(grid, escuelasConDatos) {
+            const canvasId = 'chart-inicio-consolidado';
+            const labels = [];
+            const valores = [];
+            const backgroundColors = [];
+            const borderColors = [];
+            let totalBautizados = 0;
+
+            escuelasConDatos.forEach((esc, index) => {
+                const valor = parseFloat(esc.valor) || 0;
+                const colorScheme = colorSchemes[index % colorSchemes.length];
+                labels.push(esc.nombre);
+                valores.push(valor);
+                backgroundColors.push(colorScheme.primary);
+                borderColors.push(colorScheme.border);
+                totalBautizados += valor;
+            });
+
+            const box = document.createElement('div');
+            box.style.gridColumn = '1 / -1';
+            
+            box.innerHTML = `
+                <div class="overview-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <div class="section-title">Vista General de Alumnos Participantes</div>
+                    </div>
+                    <div style="display: flex; gap: 30px; margin-bottom: 30px; flex-wrap: wrap;">
+                        <div style="flex: 0 0 400px; min-width: 300px;">
+                            <div style="background: white; border-radius: 16px; padding: 20px; border: 2px solid #e9ecef;">
+                                <canvas id="${canvasId}" style="max-height: 350px;"></canvas>
+                            </div>
+                            <div style="margin-top: 20px; text-align: center; background: linear-gradient(135deg, #003865 0%, #0077cc 100%); padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,56,101,0.3);">
+                                <div style="font-size: 56px; font-weight: 800; color: white;">${totalBautizados}</div>
+                                <div style="font-size: 13px; color: rgba(255,255,255,0.9); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin-top: 8px;">${TEXTO_TOTAL}</div>
+                            </div>
+                        </div>
+                        <div style="flex: 1; min-width: 300px;">
+                            <div class="legend-grid">
+                                ${escuelasConDatos.map((esc, index) => {
+                                    const colorScheme = colorSchemes[index % colorSchemes.length];
+                                    return `
+                                        <div class="legend-item" style="--item-color: ${colorScheme.border};">
+                                            <div class="legend-color"></div>
+                                            <span class="legend-name">${esc.nombre}</span>
+                                            <span class="legend-value">${esc.valor}</span>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overview-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-university"></i></div>
+                        <div class="section-title">Alumnos Bautizados por Facultad</div>
+                    </div>
+                    <div class="legend-grid">
+                        ${(() => {
+                            const facultadesData = obtenerFacultades(dataCache);
+                            return facultadesData.map((fac, index) => {
+                                const colorScheme = colorSchemes[index % colorSchemes.length];
+                                return `
+                                    <div class="legend-item" style="--item-color: ${colorScheme.border};">
+                                        <div class="legend-color"></div>
+                                        <span class="legend-name">${fac.nombre}</span>
+                                        <span class="legend-value">${fac.cantidad}</span>
+                                    </div>
+                                `;
+                            }).join('');
+                        })()}
+                    </div>
+                    <div style="text-align: center; margin-top: 25px; background: linear-gradient(135deg, #f0f4f8 0%, #ffffff 100%); padding: 30px; border-radius: 16px; border: 3px solid #003865;">
+                        <div style="font-size: 48px; font-weight: 800; color: #003865;">${(() => {
+                            const facultadesData = obtenerFacultades(dataCache);
+                            return facultadesData.reduce((sum, fac) => sum + fac.valor, 0);
+                        })()}</div>
+                        <div style="font-size: 13px; color: #6c757d; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin-top: 8px;">Total Alumnos Bautizados</div>
+                    </div>
+                </div>
+
+                <div class="overview-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-book-open"></i></div>
+                        <div class="section-title">Clases Bíblicas y Lecciones</div>
+                        <div class="section-count">${(() => obtenerClasesBiblicas(dataCache).filter(c => c).length)()} Clases</div>
+                    </div>
+                    <div class="clases-grid">
+                        ${(() => {
+                            const clasesBiblicas = obtenerClasesBiblicas(dataCache);
+                            const leccionesActuales = obtenerLecciones(dataCache);
+                            return clasesBiblicas.map((clase, i) => {
+                                const leccion = leccionesActuales[i] || '';
+                                if (clase || leccion) {
+                                    return `
+                                        <div class="clase-card">
+                                            <div class="clase-number">${i + 1}</div>
+                                            <div class="clase-name">${clase || '—'}</div>
+                                            <div class="clase-leccion">${leccion || '—'}</div>
+                                        </div>
+                                    `;
+                                }
+                                return '';
+                            }).join('');
+                        })()}
+                    </div>
+                </div>
+
+                <div class="overview-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                        <div class="section-title">Docentes Participantes</div>
+                        <div class="section-count">${(() => obtenerDocentes(dataCache).length)()} Docentes</div>
+                    </div>
+                    <div class="docentes-grid">
+                        ${(() => {
+                            const docentes = obtenerDocentes(dataCache);
+                            return docentes.map((docente, index) => `
+                                <div class="docente-card">
+                                    <div class="docente-number">${index + 1}</div>
+                                    <div class="docente-name">${docente.nombre}</div>
+                                </div>
+                            `).join('');
+                        })()}
+                    </div>
+                </div>
+            `;
+            
+            grid.appendChild(box);
+
+            setTimeout(() => {
+                const ctx = document.getElementById(canvasId);
+                if (!ctx) return;
+
+                chartInstances[canvasId] = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: valores,
+                            backgroundColor: backgroundColors,
+                            borderColor: borderColors,
+                            borderWidth: 3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                padding: 12,
+                                titleFont: { size: 14, weight: 'bold' },
+                                bodyFont: { size: 13 },
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.parsed;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        return `${label}: ${value} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '65%'
+                    }
+                });
+            }, 50);
+        }
+
+        function renderFacultad(grid, faculty, escuelasConDatos, facKey) {
+            if (faculty.bautizados && faculty.bautizados.length > 0) {
+                const bautizadosConDatos = faculty.bautizados.map(baut => {
+                    const nombre = dataCache[baut.filaNombre - 1]?.[1]?.trim() || 'Sin nombre';
+                    const valor = dataCache[baut.filaValor - 1]?.[0]?.trim() || '0';
+                    return { nombre, valor };
+                });
+
+                const bautizadosSection = document.createElement('div');
+                bautizadosSection.style.gridColumn = '1 / -1';
+                bautizadosSection.style.marginBottom = '30px';
+
+                const canvasBautizadosId = `chart-bautizados-${facKey}`;
                 const labels = [];
                 const valores = [];
                 const backgroundColors = [];
                 const borderColors = [];
                 let totalBautizados = 0;
 
-                escuelasConDatos.forEach((esc, index) => {
-                    const valor = parseFloat(esc.valor) || 0;
-                    const colorScheme = colorSchemes[index % colorSchemes.length];
-                    labels.push(esc.nombre);
+                bautizadosConDatos.forEach((baut, index) => {
+                    const valor = parseFloat(baut.valor) || 0;
+                    const colorScheme = colorSchemes[(index + 4) % colorSchemes.length];
+                    labels.push(baut.nombre !== 'Sin nombre' ? baut.nombre : `Escuela ${index + 1}`);
                     valores.push(valor);
                     backgroundColors.push(colorScheme.primary);
                     borderColors.push(colorScheme.border);
                     totalBautizados += valor;
                 });
 
-                const box = document.createElement('div');
-                box.style.gridColumn = '1 / -1';
-                
-                box.innerHTML = `
+                bautizadosSection.innerHTML = `
                     <div class="overview-section">
                         <div class="section-header">
-                            <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
-                            <div class="section-title">Vista General de Alumnos Participantes</div>
+                            <div class="section-icon"><i class="fas fa-certificate"></i></div>
+                            <div class="section-title">Alumnos Bautizados por Escuela</div>
+                            <div class="section-count">${totalBautizados} Total</div>
                         </div>
-                        <div style="display: flex; gap: 30px; margin-bottom: 30px;">
-                            <div style="flex: 0 0 400px;">
+                        <div style="display: flex; gap: 30px; align-items: center; flex-wrap: wrap;">
+                            <div style="flex: 0 0 400px; min-width: 300px;">
                                 <div style="background: white; border-radius: 16px; padding: 20px; border: 2px solid #e9ecef;">
-                                    <canvas id="${canvasId}" style="max-height: 350px;"></canvas>
+                                    <canvas id="${canvasBautizadosId}" style="max-height: 350px;"></canvas>
                                 </div>
-                                <div style="margin-top: 20px; text-align: center; background: linear-gradient(135deg, #003865 0%, #0077cc 100%); padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,56,101,0.3);">
+                                <div style="margin-top: 20px; text-align: center; background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(16,185,129,0.3);">
                                     <div style="font-size: 56px; font-weight: 800; color: white;">${totalBautizados}</div>
-                                    <div style="font-size: 13px; color: rgba(255,255,255,0.9); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin-top: 8px;">${TEXTO_TOTAL}</div>
+                                    <div style="font-size: 13px; color: rgba(255,255,255,0.9); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin-top: 8px;">Total Bautizados</div>
                                 </div>
                             </div>
-                            <div style="flex: 1;">
+                            <div style="flex: 1; min-width: 300px;">
                                 <div class="legend-grid">
-                                    ${escuelasConDatos.map((esc, index) => {
-                                        const colorScheme = colorSchemes[index % colorSchemes.length];
+                                    ${bautizadosConDatos.map((baut, index) => {
+                                        const colorScheme = colorSchemes[(index + 4) % colorSchemes.length];
+                                        const nombreMostrar = baut.nombre !== 'Sin nombre' ? baut.nombre : `Escuela ${index + 1}`;
+                                        const valorMostrar = parseFloat(baut.valor) || 0;
                                         return `
                                             <div class="legend-item" style="--item-color: ${colorScheme.border};">
                                                 <div class="legend-color"></div>
-                                                <span class="legend-name">${esc.nombre}</span>
-                                                <span class="legend-value">${esc.valor}</span>
+                                                <span class="legend-name">${nombreMostrar}</span>
+                                                <span class="legend-value">${valorMostrar}</span>
                                             </div>
                                         `;
                                     }).join('')}
@@ -1158,98 +1341,25 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="overview-section">
-                        <div class="section-header">
-                            <div class="section-icon"><i class="fas fa-university"></i></div>
-                            <div class="section-title">Alumnos Bautizados por Facultad</div>
-                        </div>
-                        <div class="legend-grid">
-                            ${(() => {
-                                const facultadesData = obtenerFacultades(dataCache);
-                                return facultadesData.map((fac, index) => {
-                                    const colorScheme = colorSchemes[index % colorSchemes.length];
-                                    return `
-                                        <div class="legend-item" style="--item-color: ${colorScheme.border};">
-                                            <div class="legend-color"></div>
-                                            <span class="legend-name">${fac.nombre}</span>
-                                            <span class="legend-value">${fac.cantidad}</span>
-                                        </div>
-                                    `;
-                                }).join('');
-                            })()}
-                        </div>
-                        <div style="text-align: center; margin-top: 25px; background: linear-gradient(135deg, #f0f4f8 0%, #ffffff 100%); padding: 30px; border-radius: 16px; border: 3px solid #003865;">
-                            <div style="font-size: 48px; font-weight: 800; color: #003865;">${(() => {
-                                const facultadesData = obtenerFacultades(dataCache);
-                                return facultadesData.reduce((sum, fac) => sum + fac.valor, 0);
-                            })()}</div>
-                            <div style="font-size: 13px; color: #6c757d; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin-top: 8px;">Total Alumnos Bautizados</div>
-                        </div>
-                    </div>
-
-                    <div class="overview-section">
-                        <div class="section-header">
-                            <div class="section-icon"><i class="fas fa-book-open"></i></div>
-                            <div class="section-title">Clases Bíblicas y Lecciones</div>
-                            <div class="section-count">${(() => obtenerClasesBiblicas(dataCache).filter(c => c).length)()} Clases</div>
-                        </div>
-                        <div class="clases-grid">
-                            ${(() => {
-                                const clasesBiblicas = obtenerClasesBiblicas(dataCache);
-                                const leccionesActuales = obtenerLecciones(dataCache);
-                                return clasesBiblicas.map((clase, i) => {
-                                    const leccion = leccionesActuales[i] || '';
-                                    if (clase || leccion) {
-                                        return `
-                                            <div class="clase-card">
-                                                <div class="clase-number">${i + 1}</div>
-                                                <div class="clase-name">${clase || '—'}</div>
-                                                <div class="clase-leccion">${leccion || '—'}</div>
-                                            </div>
-                                        `;
-                                    }
-                                    return '';
-                                }).join('');
-                            })()}
-                        </div>
-                    </div>
-
-                    <div class="overview-section">
-                        <div class="section-header">
-                            <div class="section-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-                            <div class="section-title">Docentes Participantes</div>
-                            <div class="section-count">${(() => obtenerDocentes(dataCache).length)()} Docentes</div>
-                        </div>
-                        <div class="docentes-grid">
-                            ${(() => {
-                                const docentes = obtenerDocentes(dataCache);
-                                return docentes.map((docente, index) => `
-                                    <div class="docente-card">
-                                        <div class="docente-number">${index + 1}</div>
-                                        <div class="docente-name">${docente.nombre}</div>
-                                    </div>
-                                `).join('');
-                            })()}
-                        </div>
-                    </div>
                 `;
-                
-                grid.appendChild(box);
+
+                grid.appendChild(bautizadosSection);
 
                 setTimeout(() => {
-                    const ctx = document.getElementById(canvasId);
+                    const ctx = document.getElementById(canvasBautizadosId);
                     if (!ctx) return;
 
-                    chartInstances[canvasId] = new Chart(ctx, {
-                        type: 'doughnut',
+                    chartInstances[canvasBautizadosId] = new Chart(ctx, {
+                        type: 'bar',
                         data: {
                             labels: labels,
                             datasets: [{
+                                label: 'Bautizados',
                                 data: valores,
                                 backgroundColor: backgroundColors,
                                 borderColor: borderColors,
-                                borderWidth: 3
+                                borderWidth: 2,
+                                borderRadius: 8
                             }]
                         },
                         options: {
@@ -1264,190 +1374,75 @@
                                     bodyFont: { size: 13 },
                                     callbacks: {
                                         label: function(context) {
-                                            const label = context.label || '';
-                                            const value = context.parsed;
-                                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                            const percentage = ((value / total) * 100).toFixed(1);
-                                            return `${label}: ${value} (${percentage}%)`;
+                                            const value = context.parsed.y;
+                                            const total = valores.reduce((a, b) => a + b, 0);
+                                            if (total > 0) {
+                                                const percentage = ((value / total) * 100).toFixed(1);
+                                                return `Bautizados: ${value} (${percentage}%)`;
+                                            }
+                                            return `Bautizados: ${value}`;
                                         }
                                     }
                                 }
                             },
-                            cutout: '65%'
-                        }
-                    });
-                }, 50);
-            } else {
-                // Primero agregamos la sección de bautizados (ARRIBA)
-                if (faculty.bautizados && faculty.bautizados.length > 0) {
-                    const bautizadosConDatos = faculty.bautizados.map(baut => {
-                        const nombre = dataCache[baut.filaNombre - 1]?.[1]?.trim() || 'Sin nombre'; // Columna B
-                        const valor = dataCache[baut.filaValor - 1]?.[0]?.trim() || '0'; // Columna A
-                        return { nombre, valor };
-                    });
-
-                    // Mostramos TODAS las escuelas, incluso con 0 alumnos
-                    const bautizadosSection = document.createElement('div');
-                    bautizadosSection.style.gridColumn = '1 / -1';
-                    bautizadosSection.style.marginBottom = '30px';
-
-                    const canvasBautizadosId = `chart-bautizados-${facKey}`;
-                    const labels = [];
-                    const valores = [];
-                    const backgroundColors = [];
-                    const borderColors = [];
-                    let totalBautizados = 0;
-
-                    bautizadosConDatos.forEach((baut, index) => {
-                        const valor = parseFloat(baut.valor) || 0;
-                        const colorScheme = colorSchemes[(index + 4) % colorSchemes.length];
-                        // Mostrar todas las escuelas, incluso con 0
-                        labels.push(baut.nombre !== 'Sin nombre' ? baut.nombre : `Escuela ${index + 1}`);
-                        valores.push(valor);
-                        backgroundColors.push(colorScheme.primary);
-                        borderColors.push(colorScheme.border);
-                        totalBautizados += valor;
-                    });
-
-                    bautizadosSection.innerHTML = `
-                        <div class="overview-section">
-                            <div class="section-header">
-                                <div class="section-icon"><i class="fas fa-certificate"></i></div>
-                                <div class="section-title">Alumnos Bautizados por Escuela</div>
-                                <div class="section-count">${totalBautizados} Total</div>
-                            </div>
-                            <div style="display: flex; gap: 30px; align-items: center; flex-wrap: wrap;">
-                                <div style="flex: 0 0 400px; min-width: 300px;">
-                                    <div style="background: white; border-radius: 16px; padding: 20px; border: 2px solid #e9ecef;">
-                                        <canvas id="${canvasBautizadosId}" style="max-height: 350px;"></canvas>
-                                    </div>
-                                    <div style="margin-top: 20px; text-align: center; background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(16,185,129,0.3);">
-                                        <div style="font-size: 56px; font-weight: 800; color: white;">${totalBautizados}</div>
-                                        <div style="font-size: 13px; color: rgba(255,255,255,0.9); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin-top: 8px;">Total Bautizados</div>
-                                    </div>
-                                </div>
-                                <div style="flex: 1; min-width: 300px;">
-                                    <div class="legend-grid">
-                                        ${bautizadosConDatos.map((baut, index) => {
-                                            const colorScheme = colorSchemes[(index + 4) % colorSchemes.length];
-                                            const nombreMostrar = baut.nombre !== 'Sin nombre' ? baut.nombre : `Escuela ${index + 1}`;
-                                            const valorMostrar = parseFloat(baut.valor) || 0;
-                                            return `
-                                                <div class="legend-item" style="--item-color: ${colorScheme.border};">
-                                                    <div class="legend-color"></div>
-                                                    <span class="legend-name">${nombreMostrar}</span>
-                                                    <span class="legend-value">${valorMostrar}</span>
-                                                </div>
-                                            `;
-                                        }).join('')}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-
-                    grid.appendChild(bautizadosSection);
-
-                    setTimeout(() => {
-                        const ctx = document.getElementById(canvasBautizadosId);
-                        if (!ctx) return;
-
-                        chartInstances[canvasBautizadosId] = new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: labels,
-                                datasets: [{
-                                    label: 'Bautizados',
-                                    data: valores,
-                                    backgroundColor: backgroundColors,
-                                    borderColor: borderColors,
-                                    borderWidth: 2,
-                                    borderRadius: 8
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: true,
-                                plugins: {
-                                    legend: { display: false },
-                                    tooltip: {
-                                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                        padding: 12,
-                                        titleFont: { size: 14, weight: 'bold' },
-                                        bodyFont: { size: 13 },
-                                        callbacks: {
-                                            label: function(context) {
-                                                const value = context.parsed.y;
-                                                const total = valores.reduce((a, b) => a + b, 0);
-                                                if (total > 0) {
-                                                    const percentage = ((value / total) * 100).toFixed(1);
-                                                    return `Bautizados: ${value} (${percentage}%)`;
-                                                }
-                                                return `Bautizados: ${value}`;
-                                            }
-                                        }
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1,
+                                        font: { weight: 'bold' }
+                                    },
+                                    grid: {
+                                        color: 'rgba(0, 0, 0, 0.05)'
                                     }
                                 },
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        ticks: {
-                                            stepSize: 1,
-                                            font: { weight: 'bold' }
-                                        },
-                                        grid: {
-                                            color: 'rgba(0, 0, 0, 0.05)'
-                                        }
+                                x: {
+                                    ticks: {
+                                        font: { weight: 'bold', size: 11 },
+                                        maxRotation: 45,
+                                        minRotation: 45
                                     },
-                                    x: {
-                                        ticks: {
-                                            font: { weight: 'bold', size: 11 },
-                                            maxRotation: 45,
-                                            minRotation: 45
-                                        },
-                                        grid: {
-                                            display: false
-                                        }
+                                    grid: {
+                                        display: false
                                     }
                                 }
                             }
-                        });
-                    }, 50);
-                }
-
-                // Ahora mostramos las escuelas con participantes (ABAJO)
-                escuelasConDatos.forEach((esc, index) => {
-                    const canvasId = `chart-${facKey}-${index}`;
-                    const colorScheme = colorSchemes[index % colorSchemes.length];
-                    
-                    const box = document.createElement('div');
-                    box.className = 'chart-box';
-                    box.style.setProperty('--chart-color', colorScheme.border);
-                    box.style.setProperty('--chart-color-dark', colorScheme.dark);
-                    box.style.setProperty('--chart-color-light', colorScheme.light);
-                    
-                    const valorNumerico = parseFloat(esc.valor) || 0;
-                    
-                    box.innerHTML = `
-                        <div class="chart-header">
-                            <div class="chart-title">${esc.nombre}</div>
-                            <div class="chart-badge"><i class="fas fa-users"></i> ${valorNumerico}</div>
-                        </div>
-                        <div class="chart-content">
-                            <div class="chart-image-container">
-                                <canvas id="${canvasId}" class="chart-canvas"></canvas>
-                            </div>
-                            <div class="chart-value-display">
-                                <span class="chart-value-number">${valorNumerico}</span>
-                                <span class="chart-value-label">Participantes</span>
-                            </div>
-                        </div>
-                    `;
-                    
-                    grid.appendChild(box);
-                    setTimeout(() => createChart(canvasId, valorNumerico, esc.nombre, colorScheme), 50);
-                });
+                        }
+                    });
+                }, 50);
             }
+
+            escuelasConDatos.forEach((esc, index) => {
+                const canvasId = `chart-${facKey}-${index}`;
+                const colorScheme = colorSchemes[index % colorSchemes.length];
+                
+                const box = document.createElement('div');
+                box.className = 'chart-box';
+                box.style.setProperty('--chart-color', colorScheme.border);
+                box.style.setProperty('--chart-color-dark', colorScheme.dark);
+                box.style.setProperty('--chart-color-light', colorScheme.light);
+                
+                const valorNumerico = parseFloat(esc.valor) || 0;
+                
+                box.innerHTML = `
+                    <div class="chart-header">
+                        <div class="chart-title">${esc.nombre}</div>
+                        <div class="chart-badge"><i class="fas fa-users"></i> ${valorNumerico}</div>
+                    </div>
+                    <div class="chart-content">
+                        <div class="chart-image-container">
+                            <canvas id="${canvasId}" class="chart-canvas"></canvas>
+                        </div>
+                        <div class="chart-value-display">
+                            <span class="chart-value-number">${valorNumerico}</span>
+                            <span class="chart-value-label">Participantes</span>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(box);
+                setTimeout(() => createChart(canvasId, valorNumerico, esc.nombre, colorScheme), 50);
+            });
         }
 
         function mostrarFacultad(facKey, event) {
@@ -1465,7 +1460,6 @@
             if (success) {
                 renderFaculty('INICIO');
                 
-                // Auto-actualización cada minuto
                 updateTimer = setInterval(async () => {
                     await loadData(true);
                     renderFaculty(currentFaculty);
@@ -1479,7 +1473,6 @@
 
         window.onload = init;
 
-        // Limpiar timer al cerrar
         window.onbeforeunload = () => {
             if (updateTimer) clearInterval(updateTimer);
         };
