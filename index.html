@@ -844,17 +844,43 @@
             { filaNombre: 30, filaValor: 8 }, { filaNombre: 29, filaValor: 7 }
         ];
 
+        // Bautizados FIA (B55-B58 para nombres, A55-A58 para valores)
+        const bautizadosFIA = [
+            { filaNombre: 55, filaValor: 55 }, // B55, A55
+            { filaNombre: 56, filaValor: 56 }, // B56, A56
+            { filaNombre: 57, filaValor: 57 }, // B57, A57
+            { filaNombre: 58, filaValor: 58 }  // B58, A58
+        ];
+
         const escuelasFCE = [
             { filaNombre: 26, filaValor: 4 }, { filaNombre: 31, filaValor: 9 },
             { filaNombre: 32, filaValor: 10 }
+        ];
+
+        // Bautizados FCE (B60-B62 para nombres, A60-A62 para valores)
+        const bautizadosFCE = [
+            { filaNombre: 60, filaValor: 60 }, // B60, A60
+            { filaNombre: 61, filaValor: 61 }, // B61, A61
+            { filaNombre: 62, filaValor: 62 }  // B62, A62
         ];
 
         const escuelasFACIHED = [
             { filaNombre: 27, filaValor: 5 }, { filaNombre: 28, filaValor: 6 }
         ];
 
+        // Bautizados FACIHED (B64-B65 para nombres, A64-A65 para valores)
+        const bautizadosFACIHED = [
+            { filaNombre: 64, filaValor: 64 }, // B64, A64
+            { filaNombre: 65, filaValor: 65 }  // B65, A65
+        ];
+
         const escuelasFCS = [
             { filaNombre: 33, filaValor: 11 }
+        ];
+
+        // Bautizados FCS (B67 para nombre, A67 para valor)
+        const bautizadosFCS = [
+            { filaNombre: 67, filaValor: 67 }  // B67, A67
         ];
 
         const docentesConfig = Array.from({length: 54}, (_, i) => ({
@@ -885,10 +911,10 @@
 
         const facultades = {
             INICIO: { nombre: "Asistentes por escuelas", escuelas: escuelasInicio },
-            FIA: { nombre: "Facultad de Ingeniería y Arquitectura", escuelas: escuelasFIA },
-            FCE: { nombre: "Facultad de Ciencias Empresariales", escuelas: escuelasFCE },
-            FACIHED: { nombre: "Facultad de Ciencias Humanas, Educación y Derecho", escuelas: escuelasFACIHED },
-            FCS: { nombre: "Facultad de Ciencias de la Salud", escuelas: escuelasFCS }
+            FIA: { nombre: "Facultad de Ingeniería y Arquitectura", escuelas: escuelasFIA, bautizados: bautizadosFIA },
+            FCE: { nombre: "Facultad de Ciencias Empresariales", escuelas: escuelasFCE, bautizados: bautizadosFCE },
+            FACIHED: { nombre: "Facultad de Ciencias Humanas, Educación y Derecho", escuelas: escuelasFACIHED, bautizados: bautizadosFACIHED },
+            FCS: { nombre: "Facultad de Ciencias de la Salud", escuelas: escuelasFCS, bautizados: bautizadosFCS }
         };
 
         let currentFaculty = 'INICIO';
@@ -1248,6 +1274,7 @@
                     });
                 }, 50);
             } else {
+                // Primero mostramos las escuelas con participantes
                 escuelasConDatos.forEach((esc, index) => {
                     const canvasId = `chart-${facKey}-${index}`;
                     const colorScheme = colorSchemes[index % colorSchemes.length];
@@ -1277,6 +1304,136 @@
                     grid.appendChild(box);
                     setTimeout(() => createChart(canvasId, esc.valor, esc.nombre, colorScheme), 50);
                 });
+
+                // Ahora agregamos la sección de bautizados si existe
+                if (faculty.bautizados && faculty.bautizados.length > 0) {
+                    const bautizadosConDatos = faculty.bautizados.map(baut => {
+                        const nombre = dataCache[baut.filaNombre - 1]?.[1]?.trim() || ''; // Columna B
+                        const valor = dataCache[baut.filaValor - 1]?.[0]?.trim() || '0'; // Columna A
+                        return { nombre, valor };
+                    }).filter(baut => baut.nombre !== '' && baut.nombre);
+
+                    if (bautizadosConDatos.length > 0) {
+                        const bautizadosSection = document.createElement('div');
+                        bautizadosSection.style.gridColumn = '1 / -1';
+                        bautizadosSection.style.marginTop = '20px';
+
+                        const canvasBautizadosId = `chart-bautizados-${facKey}`;
+                        const labels = [];
+                        const valores = [];
+                        const backgroundColors = [];
+                        const borderColors = [];
+                        let totalBautizados = 0;
+
+                        bautizadosConDatos.forEach((baut, index) => {
+                            const valor = parseFloat(baut.valor) || 0;
+                            const colorScheme = colorSchemes[(index + 4) % colorSchemes.length];
+                            labels.push(baut.nombre);
+                            valores.push(valor);
+                            backgroundColors.push(colorScheme.primary);
+                            borderColors.push(colorScheme.border);
+                            totalBautizados += valor;
+                        });
+
+                        bautizadosSection.innerHTML = `
+                            <div class="overview-section">
+                                <div class="section-header">
+                                    <div class="section-icon"><i class="fas fa-certificate"></i></div>
+                                    <div class="section-title">Alumnos Bautizados por Escuela</div>
+                                    <div class="section-count">${totalBautizados} Total</div>
+                                </div>
+                                <div style="display: flex; gap: 30px; align-items: center;">
+                                    <div style="flex: 0 0 400px;">
+                                        <div style="background: white; border-radius: 16px; padding: 20px; border: 2px solid #e9ecef;">
+                                            <canvas id="${canvasBautizadosId}" style="max-height: 350px;"></canvas>
+                                        </div>
+                                        <div style="margin-top: 20px; text-align: center; background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(16,185,129,0.3);">
+                                            <div style="font-size: 56px; font-weight: 800; color: white;">${totalBautizados}</div>
+                                            <div style="font-size: 13px; color: rgba(255,255,255,0.9); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin-top: 8px;">Total Bautizados</div>
+                                        </div>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <div class="legend-grid">
+                                            ${bautizadosConDatos.map((baut, index) => {
+                                                const colorScheme = colorSchemes[(index + 4) % colorSchemes.length];
+                                                return `
+                                                    <div class="legend-item" style="--item-color: ${colorScheme.border};">
+                                                        <div class="legend-color"></div>
+                                                        <span class="legend-name">${baut.nombre}</span>
+                                                        <span class="legend-value">${baut.valor}</span>
+                                                    </div>
+                                                `;
+                                            }).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        grid.appendChild(bautizadosSection);
+
+                        setTimeout(() => {
+                            const ctx = document.getElementById(canvasBautizadosId);
+                            if (!ctx) return;
+
+                            chartInstances[canvasBautizadosId] = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: labels,
+                                    datasets: [{
+                                        label: 'Bautizados',
+                                        data: valores,
+                                        backgroundColor: backgroundColors,
+                                        borderColor: borderColors,
+                                        borderWidth: 2,
+                                        borderRadius: 8
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: true,
+                                    plugins: {
+                                        legend: { display: false },
+                                        tooltip: {
+                                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                            padding: 12,
+                                            titleFont: { size: 14, weight: 'bold' },
+                                            bodyFont: { size: 13 },
+                                            callbacks: {
+                                                label: function(context) {
+                                                    const value = context.parsed.y;
+                                                    const total = valores.reduce((a, b) => a + b, 0);
+                                                    const percentage = ((value / total) * 100).toFixed(1);
+                                                    return `Bautizados: ${value} (${percentage}%)`;
+                                                }
+                                            }
+                                        }
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            ticks: {
+                                                stepSize: 1,
+                                                font: { weight: 'bold' }
+                                            },
+                                            grid: {
+                                                color: 'rgba(0, 0, 0, 0.05)'
+                                            }
+                                        },
+                                        x: {
+                                            ticks: {
+                                                font: { weight: 'bold' }
+                                            },
+                                            grid: {
+                                                display: false
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }, 50);
+                    }
+                }
             }
         }
 
