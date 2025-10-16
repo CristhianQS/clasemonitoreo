@@ -1313,7 +1313,7 @@
                             <div class="section-title">Alumnos Bautizados por Escuela</div>
                             <div class="section-count">${totalBautizados} Total</div>
                         </div>
-                        <div style="display: flex; gap: 30px; align-items: center; flex-wrap: wrap;">
+                        <div style="display: flex; gap: 30px; align-items: center; justify-content: center; flex-wrap: wrap; max-width: 1400px; margin: 0 auto;">
                             <div style="flex: 0 0 400px; min-width: 300px;">
                                 <div style="background: white; border-radius: 16px; padding: 20px; border: 2px solid #e9ecef;">
                                     <canvas id="${canvasBautizadosId}" style="max-height: 350px;"></canvas>
@@ -1323,7 +1323,7 @@
                                     <div style="font-size: 13px; color: rgba(255,255,255,0.9); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin-top: 8px;">Total Bautizados</div>
                                 </div>
                             </div>
-                            <div style="flex: 1; min-width: 300px;">
+                            <div style="flex: 1; min-width: 300px; max-width: 700px;">
                                 <div class="legend-grid">
                                     ${bautizadosConDatos.map((baut, index) => {
                                         const colorScheme = colorSchemes[(index + 4) % colorSchemes.length];
