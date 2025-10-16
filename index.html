@@ -1274,40 +1274,7 @@
                     });
                 }, 50);
             } else {
-                // Primero mostramos las escuelas con participantes
-                escuelasConDatos.forEach((esc, index) => {
-                    const canvasId = `chart-${facKey}-${index}`;
-                    const colorScheme = colorSchemes[index % colorSchemes.length];
-                    
-                    const box = document.createElement('div');
-                    box.className = 'chart-box';
-                    box.style.setProperty('--chart-color', colorScheme.border);
-                    box.style.setProperty('--chart-color-dark', colorScheme.dark);
-                    box.style.setProperty('--chart-color-light', colorScheme.light);
-                    
-                    const valorNumerico = parseFloat(esc.valor) || 0;
-                    
-                    box.innerHTML = `
-                        <div class="chart-header">
-                            <div class="chart-title">${esc.nombre}</div>
-                            <div class="chart-badge"><i class="fas fa-users"></i> ${valorNumerico}</div>
-                        </div>
-                        <div class="chart-content">
-                            <div class="chart-image-container">
-                                <canvas id="${canvasId}" class="chart-canvas"></canvas>
-                            </div>
-                            <div class="chart-value-display">
-                                <span class="chart-value-number">${valorNumerico}</span>
-                                <span class="chart-value-label">Participantes</span>
-                            </div>
-                        </div>
-                    `;
-                    
-                    grid.appendChild(box);
-                    setTimeout(() => createChart(canvasId, valorNumerico, esc.nombre, colorScheme), 50);
-                });
-
-                // Ahora agregamos la sección de bautizados (SIEMPRE se muestra)
+                // Primero agregamos la sección de bautizados (ARRIBA)
                 if (faculty.bautizados && faculty.bautizados.length > 0) {
                     const bautizadosConDatos = faculty.bautizados.map(baut => {
                         const nombre = dataCache[baut.filaNombre - 1]?.[1]?.trim() || 'Sin nombre'; // Columna B
@@ -1318,7 +1285,7 @@
                     // Mostramos TODAS las escuelas, incluso con 0 alumnos
                     const bautizadosSection = document.createElement('div');
                     bautizadosSection.style.gridColumn = '1 / -1';
-                    bautizadosSection.style.marginTop = '20px';
+                    bautizadosSection.style.marginBottom = '30px';
 
                     const canvasBautizadosId = `chart-bautizados-${facKey}`;
                     const labels = [];
@@ -1443,6 +1410,39 @@
                         });
                     }, 50);
                 }
+
+                // Ahora mostramos las escuelas con participantes (ABAJO)
+                escuelasConDatos.forEach((esc, index) => {
+                    const canvasId = `chart-${facKey}-${index}`;
+                    const colorScheme = colorSchemes[index % colorSchemes.length];
+                    
+                    const box = document.createElement('div');
+                    box.className = 'chart-box';
+                    box.style.setProperty('--chart-color', colorScheme.border);
+                    box.style.setProperty('--chart-color-dark', colorScheme.dark);
+                    box.style.setProperty('--chart-color-light', colorScheme.light);
+                    
+                    const valorNumerico = parseFloat(esc.valor) || 0;
+                    
+                    box.innerHTML = `
+                        <div class="chart-header">
+                            <div class="chart-title">${esc.nombre}</div>
+                            <div class="chart-badge"><i class="fas fa-users"></i> ${valorNumerico}</div>
+                        </div>
+                        <div class="chart-content">
+                            <div class="chart-image-container">
+                                <canvas id="${canvasId}" class="chart-canvas"></canvas>
+                            </div>
+                            <div class="chart-value-display">
+                                <span class="chart-value-number">${valorNumerico}</span>
+                                <span class="chart-value-label">Participantes</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    grid.appendChild(box);
+                    setTimeout(() => createChart(canvasId, valorNumerico, esc.nombre, colorScheme), 50);
+                });
             }
         }
 
