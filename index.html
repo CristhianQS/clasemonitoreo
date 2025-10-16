@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Panel Facultades UPeU</title>
+    <title>Panel Clases Bíblicas UPeU</title>
+    
+    <!-- Chart.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
         * {
             margin: 0;
@@ -12,17 +21,118 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-blue: #003865;
+            --secondary-blue: #0077cc;
+            --light-blue: #e8f0f7;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --danger-red: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #e8f0f7 0%, #f5f8fb 100%);
             color: #2c3e50;
             min-height: 100vh;
             padding: 20px;
+            position: relative;
+        }
+
+        /* Loading Spinner */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--gray-200);
+            border-top: 4px solid var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Status Bar */
+        .status-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 12px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--gray-700);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.online {
+            background: var(--success-green);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .last-update {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--gray-700);
+            background: var(--gray-100);
+            padding: 6px 12px;
+            border-radius: 20px;
         }
 
         .container {
-            max-width: 1400px;
-            margin: 0 auto;
+            max-width: 1600px;
+            margin: 70px auto 0;
             background: white;
             border-radius: 24px;
             box-shadow: 0 25px 70px rgba(0, 56, 101, 0.15);
@@ -31,7 +141,7 @@
 
         header {
             background: linear-gradient(135deg, #003865 0%, #005a9e 50%, #0077cc 100%);
-            padding: 40px 30px;
+            padding: 50px 30px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -47,24 +157,63 @@
             background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.03)"/></svg>');
             background-size: 100px 100px;
             opacity: 0.5;
+            animation: drift 20s infinite linear;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
         }
 
         h1 {
             color: white;
-            font-size: 36px;
-            font-weight: 700;
+            font-size: 42px;
+            font-weight: 800;
             position: relative;
             z-index: 1;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            letter-spacing: -1px;
         }
 
         .subtitle {
             color: rgba(255,255,255,0.95);
-            font-size: 15px;
-            margin-top: 10px;
+            font-size: 16px;
             position: relative;
             z-index: 1;
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-stat {
+            text-align: center;
+        }
+
+        .header-stat-number {
+            font-size: 36px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header-stat-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.9);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
         }
 
         .button-bar {
@@ -135,17 +284,17 @@
         }
 
         .faculty-title h2 {
-            font-size: 28px;
+            font-size: 32px;
             color: #003865;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+            font-weight: 800;
+            letter-spacing: -1px;
         }
 
         .chart-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
             gap: 30px;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -185,6 +334,9 @@
         .chart-header {
             background: linear-gradient(135deg, var(--chart-color-dark) 0%, var(--chart-color) 100%);
             padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .chart-title {
@@ -192,6 +344,15 @@
             font-size: 16px;
             font-weight: 600;
             letter-spacing: 0.3px;
+        }
+
+        .chart-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
         }
 
         .chart-content {
@@ -269,9 +430,199 @@
             z-index: 1;
         }
 
+        /* Sección mejorada para INICIO */
+        .overview-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 20px;
+            border: 2px solid #e9ecef;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #003865;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #003865 0%, #0077cc 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #003865;
+            flex: 1;
+        }
+
+        .section-count {
+            background: linear-gradient(135deg, #003865 0%, #0077cc 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid var(--item-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .legend-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            background: var(--item-color);
+            flex-shrink: 0;
+        }
+
+        .legend-name {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .legend-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--item-color);
+        }
+
+        .docentes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+        }
+
+        .docente-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #003865;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .docente-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .docente-number {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #003865 0%, #0077cc 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .docente-name {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 500;
+            color: #2c3e50;
+            line-height: 1.4;
+        }
+
+        .clases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .clase-card {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 12px;
+            padding: 14px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #0077cc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .clase-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .clase-number {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #0077cc 0%, #0099ff 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .clase-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .clase-leccion {
+            padding: 6px 14px;
+            background: linear-gradient(135deg, #003865 0%, #0077cc 100%);
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            white-space: nowrap;
+        }
+
         footer {
             text-align: center;
-            padding: 25px;
+            padding: 30px;
             background: linear-gradient(to top, #f8f9fa 0%, white 100%);
             color: #6c757d;
             font-size: 13px;
@@ -280,6 +631,25 @@
         }
 
         @media (max-width: 768px) {
+            .status-bar {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .container {
+                margin-top: 120px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .header-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+
             .chart-content {
                 flex-direction: column;
             }
@@ -294,11 +664,13 @@
                 width: 100%;
             }
 
-            h1 {
-                font-size: 28px;
+            .chart-grid {
+                grid-template-columns: 1fr;
             }
 
-            .chart-grid {
+            .legend-grid,
+            .docentes-grid,
+            .clases-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -322,29 +694,126 @@
         .chart-box:nth-child(2) { animation-delay: 0.2s; }
         .chart-box:nth-child(3) { animation-delay: 0.3s; }
         .chart-box:nth-child(4) { animation-delay: 0.4s; }
+
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-left: 4px solid var(--success-green);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 9998;
+            animation: slideIn 0.3s ease-out;
+            max-width: 350px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notification-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--success-green);
+        }
+
+        .notification-text {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
     </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div>
+            <div class="spinner"></div>
+            <p style="margin-top: 15px; color: var(--gray-700); font-weight: 600;">Cargando datos...</p>
+        </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div style="display: flex; gap: 20px;">
+            <div class="status-item">
+                <div class="status-dot online"></div>
+                <span><strong>Estado:</strong> Conectado</span>
+            </div>
+            <div class="status-item">
+                <i class="fas fa-sync-alt"></i>
+                <span><strong>Auto-actualización:</strong> Activa (1 min)</span>
+            </div>
+        </div>
+        <div class="last-update">
+            <i class="far fa-clock"></i>
+            <span id="lastUpdateTime">Actualizando...</span>
+        </div>
+    </div>
+
     <div class="container">
         <header>
-            <h1>Clases Bíblicas UPeU Juliaca</h1>
-            <div class="subtitle">Sistema de Monitoreo en Tiempo Real</div>
+            <h1><i class="fas fa-bible"></i> Clases Bíblicas UPeU Juliaca</h1>
+            <div class="subtitle">
+                <i class="fas fa-chart-line"></i>
+                Sistema de Monitoreo en Tiempo Real
+            </div>
+            <div class="header-stats">
+                <div class="header-stat">
+                    <div class="header-stat-number" id="totalStudents">0</div>
+                    <div class="header-stat-label">Total Estudiantes</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-number" id="totalTeachers">0</div>
+                    <div class="header-stat-label">Docentes</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-number" id="totalClasses">0</div>
+                    <div class="header-stat-label">Clases Activas</div>
+                </div>
+            </div>
         </header>
 
         <div class="button-bar">
-            <button class="faculty-btn active" onclick="mostrarFacultad('INICIO', event)">INICIO</button>
-            <button class="faculty-btn" onclick="mostrarFacultad('FIA', event)">FIA</button>
-            <button class="faculty-btn" onclick="mostrarFacultad('FCE', event)">FCE</button>
-            <button class="faculty-btn" onclick="mostrarFacultad('FACIHED', event)">FACIHED</button>
-            <button class="faculty-btn" onclick="mostrarFacultad('FCS', event)">FCS</button>
+            <button class="faculty-btn active" onclick="mostrarFacultad('INICIO', event)">
+                <i class="fas fa-home"></i> INICIO
+            </button>
+            <button class="faculty-btn" onclick="mostrarFacultad('FIA', event)">
+                <i class="fas fa-drafting-compass"></i> FIA
+            </button>
+            <button class="faculty-btn" onclick="mostrarFacultad('FCE', event)">
+                <i class="fas fa-briefcase"></i> FCE
+            </button>
+            <button class="faculty-btn" onclick="mostrarFacultad('FACIHED', event)">
+                <i class="fas fa-graduation-cap"></i> FACIHED
+            </button>
+            <button class="faculty-btn" onclick="mostrarFacultad('FCS', event)">
+                <i class="fas fa-heartbeat"></i> FCS
+            </button>
         </div>
 
         <section class="content-section">
-            <div class="faculty-title"><h2 id="faculty-title">Vista General de las facultades</h2></div>
+            <div class="faculty-title"><h2 id="faculty-title">Vista General de las Facultades</h2></div>
             <div class="chart-grid" id="grid"></div>
         </section>
 
-        <footer><p>Sistema de Visualización Clases Biblicas | Asuntos Academicos © 2025</p></footer>
+        <footer>
+            <p><i class="fas fa-shield-alt"></i> Sistema de Visualización Clases Bíblicas | Asuntos Académicos © 2025</p>
+            <p style="margin-top: 8px; font-size: 11px; color: #9ca3af;">Desarrollado con <i class="fas fa-heart" style="color: #ef4444;"></i> para UPeU Juliaca</p>
+        </footer>
     </div>
 
     <script>
@@ -353,141 +822,49 @@
         // ============================================
         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQiFXjYjAygAByVbJwIoP2gY9mdjr-_tsknfT37ki2XLs20pZ6nV1-tXeivgO5wN9ndhvsYjobjh7fU/pub?gid=1727939500&single=true&output=csv';
         const TEXTO_TOTAL = "Total Participantes";
+        const UPDATE_INTERVAL = 60000; // 1 minuto
 
-        // ============================================
-        // ESCUELAS (INICIO)
-        // ============================================
+        // Configuraciones (mantienen las mismas del código original)
         const escuelasInicio = [
-            { filaNombre: 24, filaValor: 2 },
-            { filaNombre: 25, filaValor: 3 },
-            { filaNombre: 26, filaValor: 4 },
-            { filaNombre: 27, filaValor: 5 },
-            { filaNombre: 28, filaValor: 6 },
-            { filaNombre: 29, filaValor: 7 },
-            { filaNombre: 30, filaValor: 8 },
-            { filaNombre: 31, filaValor: 9 },
-            { filaNombre: 32, filaValor: 10 },
-            { filaNombre: 33, filaValor: 11 },
-            { filaNombre: 34, filaValor: 12 },
-            { filaNombre: 35, filaValor: 13 },
-            { filaNombre: 36, filaValor: 14 },
-            { filaNombre: 37, filaValor: 15 },
-            { filaNombre: 38, filaValor: 16 },
-            { filaNombre: 39, filaValor: 17 },
-            { filaNombre: 40, filaValor: 18 },
-            { filaNombre: 41, filaValor: 19 },
-            { filaNombre: 42, filaValor: 20 },
-            { filaNombre: 43, filaValor: 21 },
+            { filaNombre: 24, filaValor: 2 }, { filaNombre: 25, filaValor: 3 },
+            { filaNombre: 26, filaValor: 4 }, { filaNombre: 27, filaValor: 5 },
+            { filaNombre: 28, filaValor: 6 }, { filaNombre: 29, filaValor: 7 },
+            { filaNombre: 30, filaValor: 8 }, { filaNombre: 31, filaValor: 9 },
+            { filaNombre: 32, filaValor: 10 }, { filaNombre: 33, filaValor: 11 },
+            { filaNombre: 34, filaValor: 12 }, { filaNombre: 35, filaValor: 13 },
+            { filaNombre: 36, filaValor: 14 }, { filaNombre: 37, filaValor: 15 },
+            { filaNombre: 38, filaValor: 16 }, { filaNombre: 39, filaValor: 17 },
+            { filaNombre: 40, filaValor: 18 }, { filaNombre: 41, filaValor: 19 },
+            { filaNombre: 42, filaValor: 20 }, { filaNombre: 43, filaValor: 21 },
             { filaNombre: 44, filaValor: 22 }
         ];
 
-        // ============================================
-        // FACULTAD DE INGENIERÍA Y ARQUITECTURA (FIA)
-        // ============================================
         const escuelasFIA = [
-            { filaNombre: 24, filaValor: 2 },
-            { filaNombre: 25, filaValor: 3 },
-            { filaNombre: 30, filaValor: 8 },
-            { filaNombre: 29, filaValor: 7 }
+            { filaNombre: 24, filaValor: 2 }, { filaNombre: 25, filaValor: 3 },
+            { filaNombre: 30, filaValor: 8 }, { filaNombre: 29, filaValor: 7 }
         ];
 
-        // ============================================
-        // FACULTAD DE CIENCIAS EMPRESARIALES (FCE)
-        // ============================================
         const escuelasFCE = [
-            { filaNombre: 26, filaValor: 4 },
-            { filaNombre: 31, filaValor: 9 },
+            { filaNombre: 26, filaValor: 4 }, { filaNombre: 31, filaValor: 9 },
             { filaNombre: 32, filaValor: 10 }
         ];
 
-        // ============================================
-        // FACULTAD CIENCIAS HUMANAS, EDUCACIÓN Y DERECHO (FACIHED)
-        // ============================================
         const escuelasFACIHED = [
-            { filaNombre: 27, filaValor: 5 },
-            { filaNombre: 28, filaValor: 6 }
+            { filaNombre: 27, filaValor: 5 }, { filaNombre: 28, filaValor: 6 }
         ];
 
-        // ============================================
-        // FACULTAD DE CIENCIAS DE LA SALUD (FCS)
-        // ============================================
         const escuelasFCS = [
             { filaNombre: 33, filaValor: 11 }
         ];
 
-        // ============================================
-        // DOCENTES (77-130)
-        // ============================================
-        const docentesConfig = [
-            { filaNombre: 77, filaValor: 2 },
-            { filaNombre: 78, filaValor: 3 },
-            { filaNombre: 79, filaValor: 4 },
-            { filaNombre: 80, filaValor: 5 },
-            { filaNombre: 81, filaValor: 6 },
-            { filaNombre: 82, filaValor: 7 },
-            { filaNombre: 83, filaValor: 8 },
-            { filaNombre: 84, filaValor: 9 },
-            { filaNombre: 85, filaValor: 10 },
-            { filaNombre: 86, filaValor: 11 },
-            { filaNombre: 87, filaValor: 12 },
-            { filaNombre: 88, filaValor: 13 },
-            { filaNombre: 89, filaValor: 14 },
-            { filaNombre: 90, filaValor: 15 },
-            { filaNombre: 91, filaValor: 16 },
-            { filaNombre: 92, filaValor: 17 },
-            { filaNombre: 93, filaValor: 18 },
-            { filaNombre: 94, filaValor: 19 },
-            { filaNombre: 95, filaValor: 20 },
-            { filaNombre: 96, filaValor: 21 },
-            { filaNombre: 97, filaValor: 22 },
-            { filaNombre: 98, filaValor: 23 },
-            { filaNombre: 99, filaValor: 24 },
-            { filaNombre: 100, filaValor: 25 },
-            { filaNombre: 101, filaValor: 26 },
-            { filaNombre: 102, filaValor: 27 },
-            { filaNombre: 103, filaValor: 28 },
-            { filaNombre: 104, filaValor: 29 },
-            { filaNombre: 105, filaValor: 30 },
-            { filaNombre: 106, filaValor: 31 },
-            { filaNombre: 107, filaValor: 32 },
-            { filaNombre: 108, filaValor: 33 },
-            { filaNombre: 109, filaValor: 34 },
-            { filaNombre: 110, filaValor: 35 },
-            { filaNombre: 111, filaValor: 35 },
-            { filaNombre: 112, filaValor: 36 },
-            { filaNombre: 113, filaValor: 37 },
-            { filaNombre: 114, filaValor: 38 },
-            { filaNombre: 115, filaValor: 39 },
-            { filaNombre: 116, filaValor: 40 },
-            { filaNombre: 117, filaValor: 41 },
-            { filaNombre: 118, filaValor: 42 },
-            { filaNombre: 119, filaValor: 43 },
-            { filaNombre: 120, filaValor: 44 },
-            { filaNombre: 121, filaValor: 45 },
-            { filaNombre: 122, filaValor: 46 },
-            { filaNombre: 123, filaValor: 47 },
-            { filaNombre: 124, filaValor: 48 },
-            { filaNombre: 125, filaValor: 49 },
-            { filaNombre: 126, filaValor: 50 },
-            { filaNombre: 127, filaValor: 51 },
-            { filaNombre: 128, filaValor: 52 },
-            { filaNombre: 129, filaValor: 53 },
-            { filaNombre: 130, filaValor: 54 }
-        ];
+        const docentesConfig = Array.from({length: 54}, (_, i) => ({
+            filaNombre: 77 + i,
+            filaValor: 2 + i
+        }));
 
-        // ============================================
-        // CLASES BÍBLICAS (147-211)
-        // ============================================
         const clasesBiblicasRango = { inicio: 149, fin: 211 };
-
-        // ============================================
-        // LECCIONES ACTUALES (213-277)
-        // ============================================
         const leccionesActualesRango = { inicio: 215, fin: 277 };
 
-        // ============================================
-        // FACULTADES (279-283) y CANTIDADES (286-289)
-        // ============================================
         const facultadesConfig = [
             { filaNombre: 281, filaValor: 288 },
             { filaNombre: 282, filaValor: 289 },
@@ -495,118 +872,48 @@
             { filaNombre: 284, filaValor: 291 }
         ];
 
-        // ============================================
-        // COLORES
-        // ============================================
         const colorSchemes = [
-            {
-                primary: 'rgba(0, 56, 101, 0.85)',
-                secondary: 'rgba(0, 119, 204, 0.2)',
-                border: 'rgba(0, 56, 101, 1)',
-                dark: '#002d4d',
-                light: 'rgba(0, 119, 204, 0.15)'
-            },
-            {
-                primary: 'rgba(16, 124, 16, 0.85)',
-                secondary: 'rgba(76, 175, 80, 0.2)',
-                border: 'rgba(16, 124, 16, 1)',
-                dark: '#0a5f0a',
-                light: 'rgba(76, 175, 80, 0.15)'
-            },
-            {
-                primary: 'rgba(156, 39, 176, 0.85)',
-                secondary: 'rgba(186, 104, 200, 0.2)',
-                border: 'rgba(156, 39, 176, 1)',
-                dark: '#7b1fa2',
-                light: 'rgba(186, 104, 200, 0.15)'
-            },
-            {
-                primary: 'rgba(230, 74, 25, 0.85)',
-                secondary: 'rgba(255, 112, 67, 0.2)',
-                border: 'rgba(230, 74, 25, 1)',
-                dark: '#d84315',
-                light: 'rgba(255, 112, 67, 0.15)'
-            },
-            {
-                primary: 'rgba(0, 121, 107, 0.85)',
-                secondary: 'rgba(38, 166, 154, 0.2)',
-                border: 'rgba(0, 121, 107, 1)',
-                dark: '#00695c',
-                light: 'rgba(38, 166, 154, 0.15)'
-            },
-            {
-                primary: 'rgba(245, 124, 0, 0.85)',
-                secondary: 'rgba(255, 152, 0, 0.2)',
-                border: 'rgba(245, 124, 0, 1)',
-                dark: '#e65100',
-                light: 'rgba(255, 152, 0, 0.15)'
-            },
-            {
-                primary: 'rgba(21, 101, 192, 0.85)',
-                secondary: 'rgba(66, 165, 245, 0.2)',
-                border: 'rgba(21, 101, 192, 1)',
-                dark: '#0d47a1',
-                light: 'rgba(66, 165, 245, 0.15)'
-            },
-            {
-                primary: 'rgba(194, 24, 91, 0.85)',
-                secondary: 'rgba(236, 64, 122, 0.2)',
-                border: 'rgba(194, 24, 91, 1)',
-                dark: '#ad1457',
-                light: 'rgba(236, 64, 122, 0.15)'
-            }
+            { primary: 'rgba(0, 56, 101, 0.85)', secondary: 'rgba(0, 119, 204, 0.2)', border: 'rgba(0, 56, 101, 1)', dark: '#002d4d', light: 'rgba(0, 119, 204, 0.15)' },
+            { primary: 'rgba(16, 124, 16, 0.85)', secondary: 'rgba(76, 175, 80, 0.2)', border: 'rgba(16, 124, 16, 1)', dark: '#0a5f0a', light: 'rgba(76, 175, 80, 0.15)' },
+            { primary: 'rgba(156, 39, 176, 0.85)', secondary: 'rgba(186, 104, 200, 0.2)', border: 'rgba(156, 39, 176, 1)', dark: '#7b1fa2', light: 'rgba(186, 104, 200, 0.15)' },
+            { primary: 'rgba(230, 74, 25, 0.85)', secondary: 'rgba(255, 112, 67, 0.2)', border: 'rgba(230, 74, 25, 1)', dark: '#d84315', light: 'rgba(255, 112, 67, 0.15)' },
+            { primary: 'rgba(0, 121, 107, 0.85)', secondary: 'rgba(38, 166, 154, 0.2)', border: 'rgba(0, 121, 107, 1)', dark: '#00695c', light: 'rgba(38, 166, 154, 0.15)' },
+            { primary: 'rgba(245, 124, 0, 0.85)', secondary: 'rgba(255, 152, 0, 0.2)', border: 'rgba(245, 124, 0, 1)', dark: '#e65100', light: 'rgba(255, 152, 0, 0.15)' },
+            { primary: 'rgba(21, 101, 192, 0.85)', secondary: 'rgba(66, 165, 245, 0.2)', border: 'rgba(21, 101, 192, 1)', dark: '#0d47a1', light: 'rgba(66, 165, 245, 0.15)' },
+            { primary: 'rgba(194, 24, 91, 0.85)', secondary: 'rgba(236, 64, 122, 0.2)', border: 'rgba(194, 24, 91, 1)', dark: '#ad1457', light: 'rgba(236, 64, 122, 0.15)' }
         ];
 
-        // ============================================
-        // ESTRUCTURA DE FACULTADES
-        // ============================================
         const facultades = {
-            INICIO: {
-                nombre: "Asistentes por escuelas",
-                escuelas: escuelasInicio
-            },
-            FIA: {
-                nombre: "Facultad de Ingeniería y Arquitectura",
-                escuelas: escuelasFIA
-            },
-            FCE: {
-                nombre: "Facultad de Ciencias Empresariales",
-                escuelas: escuelasFCE
-            },
-            FACIHED: {
-                nombre: "Facultad de Ciencias Humanas, Educación y Derecho",
-                escuelas: escuelasFACIHED
-            },
-            FCS: {
-                nombre: "Facultad de Ciencias de la Salud",
-                escuelas: escuelasFCS
-            }
+            INICIO: { nombre: "Asistentes por escuelas", escuelas: escuelasInicio },
+            FIA: { nombre: "Facultad de Ingeniería y Arquitectura", escuelas: escuelasFIA },
+            FCE: { nombre: "Facultad de Ciencias Empresariales", escuelas: escuelasFCE },
+            FACIHED: { nombre: "Facultad de Ciencias Humanas, Educación y Derecho", escuelas: escuelasFACIHED },
+            FCS: { nombre: "Facultad de Ciencias de la Salud", escuelas: escuelasFCS }
         };
 
-        // ============================================
-        // FUNCIONES AUXILIARES
-        // ============================================
+        let currentFaculty = 'INICIO';
+        let dataCache = null;
+        let chartInstances = {};
+        let updateTimer = null;
 
+        // ============================================
+        // FUNCIONES DE DATOS
+        // ============================================
         function obtenerDocentes(dataCache) {
             const docentes = [];
-            
             docentesConfig.forEach(config => {
-                const nombre = dataCache[config.filaNombre - 1] && dataCache[config.filaNombre - 1][0]
-                    ? dataCache[config.filaNombre - 1][0].trim()
-                    : '';
-                
+                const nombre = dataCache[config.filaNombre - 1]?.[0]?.trim();
                 if (nombre && nombre !== '') {
-                    docentes.push({ nombre: nombre });
+                    docentes.push({ nombre });
                 }
             });
-            
             return docentes;
         }
 
         function obtenerClasesBiblicas(dataCache) {
             const clases = [];
             for (let i = clasesBiblicasRango.inicio; i <= clasesBiblicasRango.fin; i++) {
-                if (dataCache[i - 1] && dataCache[i - 1][0]) {
+                if (dataCache[i - 1]?.[0]) {
                     clases.push(dataCache[i - 1][0].trim());
                 }
             }
@@ -616,7 +923,7 @@
         function obtenerLecciones(dataCache) {
             const lecciones = [];
             for (let i = leccionesActualesRango.inicio; i <= leccionesActualesRango.fin; i++) {
-                if (dataCache[i - 1] && dataCache[i - 1][0]) {
+                if (dataCache[i - 1]?.[0]) {
                     lecciones.push(dataCache[i - 1][0].trim());
                 }
             }
@@ -625,43 +932,80 @@
 
         function obtenerFacultades(dataCache) {
             const facultades = [];
-            
             facultadesConfig.forEach(config => {
-                const nombre = dataCache[config.filaNombre - 1] && dataCache[config.filaNombre - 1][0]
-                    ? dataCache[config.filaNombre - 1][0].trim()
-                    : '';
-                
-                const cantidad = dataCache[config.filaValor - 1] && dataCache[config.filaValor - 1][0]
-                    ? dataCache[config.filaValor - 1][0].trim()
-                    : '0';
-                
+                const nombre = dataCache[config.filaNombre - 1]?.[0]?.trim();
+                const cantidad = dataCache[config.filaValor - 1]?.[0]?.trim() || '0';
                 if (nombre && nombre !== '') {
                     facultades.push({
-                        nombre: nombre,
-                        cantidad: cantidad,
+                        nombre,
+                        cantidad,
                         valor: parseFloat(cantidad) || 0
                     });
                 }
             });
-            
             return facultades;
         }
 
-        // ============================================
-        // VARIABLES GLOBALES
-        // ============================================
-        let currentFaculty = 'INICIO';
-        let dataCache = null;
-        let chartInstances = {};
+        function updateHeaderStats() {
+            if (!dataCache) return;
 
-        async function loadData() {
+            const escuelasData = escuelasInicio.map(esc => {
+                const valor = dataCache[esc.filaValor - 1]?.[0]?.trim() || '0';
+                return parseFloat(valor) || 0;
+            });
+            const totalStudents = escuelasData.reduce((sum, val) => sum + val, 0);
+            
+            const docentes = obtenerDocentes(dataCache);
+            const clases = obtenerClasesBiblicas(dataCache);
+
+            document.getElementById('totalStudents').textContent = totalStudents;
+            document.getElementById('totalTeachers').textContent = docentes.length;
+            document.getElementById('totalClasses').textContent = clases.filter(c => c).length;
+        }
+
+        function updateLastUpdateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('es-PE', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('lastUpdateTime').textContent = `Última actualización: ${timeString}`;
+        }
+
+        function showNotification(message) {
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
+
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <i class="fas fa-check-circle notification-icon"></i>
+                <span class="notification-text">${message}</span>
+            `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        async function loadData(showNotif = false) {
             try {
-                const resp = await fetch(SHEET_URL);
+                const resp = await fetch(SHEET_URL + '&t=' + new Date().getTime());
                 const text = await resp.text();
                 const rows = text.trim().split('\n').map(r => r.split(','));
                 dataCache = rows;
+                updateHeaderStats();
+                updateLastUpdateTime();
+                if (showNotif) {
+                    showNotification('Datos actualizados correctamente');
+                }
+                return true;
             } catch (error) {
                 console.error('Error al cargar datos:', error);
+                return false;
             }
         }
 
@@ -682,14 +1026,8 @@
                     labels: [nombre, 'Restante'],
                     datasets: [{
                         data: [numericValue, Math.max(0, max - numericValue)],
-                        backgroundColor: [
-                            colorScheme.primary,
-                            colorScheme.secondary
-                        ],
-                        borderColor: [
-                            colorScheme.border,
-                            'rgba(220, 220, 220, 0.5)'
-                        ],
+                        backgroundColor: [colorScheme.primary, colorScheme.secondary],
+                        borderColor: [colorScheme.border, 'rgba(220, 220, 220, 0.5)'],
                         borderWidth: 3
                     }]
                 },
@@ -719,10 +1057,7 @@
         }
 
         function renderFaculty(facKey) {
-            if (!dataCache) {
-                console.error('No hay datos cargados');
-                return;
-            }
+            if (!dataCache) return;
 
             const faculty = facultades[facKey];
             const grid = document.getElementById('grid');
@@ -730,27 +1065,14 @@
             grid.innerHTML = '';
 
             Object.keys(chartInstances).forEach(key => {
-                if (chartInstances[key]) {
-                    chartInstances[key].destroy();
-                }
+                if (chartInstances[key]) chartInstances[key].destroy();
             });
             chartInstances = {};
 
             const escuelasConDatos = faculty.escuelas.map(esc => {
-                const nombre = dataCache[esc.filaNombre - 1] && dataCache[esc.filaNombre - 1][0] 
-                    ? dataCache[esc.filaNombre - 1][0].trim() 
-                    : 'Sin nombre';
-                
-                const valor = dataCache[esc.filaValor - 1] && dataCache[esc.filaValor - 1][0]
-                    ? dataCache[esc.filaValor - 1][0].trim()
-                    : '0';
-                
-                return {
-                    nombre: nombre,
-                    valor: valor,
-                    filaNombre: esc.filaNombre,
-                    filaValor: esc.filaValor
-                };
+                const nombre = dataCache[esc.filaNombre - 1]?.[0]?.trim() || 'Sin nombre';
+                const valor = dataCache[esc.filaValor - 1]?.[0]?.trim() || '0';
+                return { nombre, valor, filaNombre: esc.filaNombre, filaValor: esc.filaValor };
             }).filter(esc => esc.nombre !== 'Sin nombre' && esc.nombre !== '');
 
             if (facKey === 'INICIO') {
@@ -764,7 +1086,6 @@
                 escuelasConDatos.forEach((esc, index) => {
                     const valor = parseFloat(esc.valor) || 0;
                     const colorScheme = colorSchemes[index % colorSchemes.length];
-                    
                     labels.push(esc.nombre);
                     valores.push(valor);
                     backgroundColors.push(colorScheme.primary);
@@ -773,120 +1094,113 @@
                 });
 
                 const box = document.createElement('div');
-                box.className = 'chart-box';
-                box.style.setProperty('--chart-color', '#003865');
-                box.style.setProperty('--chart-color-dark', '#002d4d');
-                box.style.setProperty('--chart-color-light', 'rgba(0, 119, 204, 0.15)');
-                box.style.maxWidth = '100%';
-                box.style.margin = '0 auto';
                 box.style.gridColumn = '1 / -1';
                 
-                let legendaHTML = '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%;">';
-                escuelasConDatos.forEach((esc, index) => {
-                    const colorScheme = colorSchemes[index % colorSchemes.length];
-                    legendaHTML += `
-                        <div style="display: flex; align-items: center; gap: 6px; padding: 8px; background: #f8f9fa; border-radius: 8px;">
-                            <div style="width: 16px; height: 16px; background: ${colorScheme.border}; border-radius: 4px; flex-shrink: 0;"></div>
-                            <span style="font-size: 11px; color: #2c3e50; font-weight: 500; flex: 1; line-height: 1.3;">${esc.nombre}</span>
-                            <span style="font-size: 14px; color: ${colorScheme.border}; font-weight: 700;">${esc.valor}</span>
-                        </div>
-                    `;
-                });
-                legendaHTML += '</div>';
-                
                 box.innerHTML = `
-                    <div class="chart-header">
-                        <div class="chart-title">Vista General de Alumnos Participantes Por Escuelas</div>
-                    </div>
-                    <div class="chart-content" style="flex-direction: column; padding: 20px; gap: 20px;">
-                        <div style="display: flex; flex-direction: row; gap: 30px;">
-                            <div style="flex: 0 0 380px; display: flex; flex-direction: column; gap: 15px;">
-                                <div class="chart-image-container" style="height: 380px; width: 100%;">
-                                    <canvas id="${canvasId}" class="chart-canvas"></canvas>
+                    <div class="overview-section">
+                        <div class="section-header">
+                            <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                            <div class="section-title">Vista General de Alumnos Participantes</div>
+                        </div>
+                        <div style="display: flex; gap: 30px; margin-bottom: 30px;">
+                            <div style="flex: 0 0 400px;">
+                                <div style="background: white; border-radius: 16px; padding: 20px; border: 2px solid #e9ecef;">
+                                    <canvas id="${canvasId}" style="max-height: 350px;"></canvas>
                                 </div>
-                                <div class="chart-value-display" style="width: 100%; flex: 0 0 auto; min-height: 100px;">
-                                    <span class="chart-value-number" style="font-size: 56px;">${totalBautizados}</span>
-                                    <span class="chart-value-label">${TEXTO_TOTAL}</span>
+                                <div style="margin-top: 20px; text-align: center; background: linear-gradient(135deg, #003865 0%, #0077cc 100%); padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,56,101,0.3);">
+                                    <div style="font-size: 56px; font-weight: 800; color: white;">${totalBautizados}</div>
+                                    <div style="font-size: 13px; color: rgba(255,255,255,0.9); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin-top: 8px;">${TEXTO_TOTAL}</div>
                                 </div>
                             </div>
-                            <div style="flex: 1; display: flex; align-items: center;">
-                                ${legendaHTML}
+                            <div style="flex: 1;">
+                                <div class="legend-grid">
+                                    ${escuelasConDatos.map((esc, index) => {
+                                        const colorScheme = colorSchemes[index % colorSchemes.length];
+                                        return `
+                                            <div class="legend-item" style="--item-color: ${colorScheme.border};">
+                                                <div class="legend-color"></div>
+                                                <span class="legend-name">${esc.nombre}</span>
+                                                <span class="legend-value">${esc.valor}</span>
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
                             </div>
                         </div>
-                        <div style="width: 100%; border-top: 2px solid #e9ecef; padding-top: 20px; margin-top: 20px;">
-                            <h3 style="text-align: center; color: #003865; font-size: 18px; font-weight: 600; margin-bottom: 20px;">Alumnos Bautizados por Facultad</h3>
+                    </div>
+
+                    <div class="overview-section">
+                        <div class="section-header">
+                            <div class="section-icon"><i class="fas fa-university"></i></div>
+                            <div class="section-title">Alumnos Bautizados por Facultad</div>
+                        </div>
+                        <div class="legend-grid">
                             ${(() => {
                                 const facultadesData = obtenerFacultades(dataCache);
-                                if (facultadesData.length === 0) return '<p>No hay datos de facultades</p>';
-
-                                let legendaFacHTML = '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; width: 100%; margin-bottom: 20px;">';
-                                facultadesData.forEach((fac, index) => {
+                                return facultadesData.map((fac, index) => {
                                     const colorScheme = colorSchemes[index % colorSchemes.length];
-                                    legendaFacHTML += `
-                                        <div style="display: flex; align-items: center; gap: 8px; padding: 12px; background: #f8f9fa; border-radius: 8px;">
-                                            <div style="width: 24px; height: 24px; background: ${colorScheme.border}; border-radius: 4px; flex-shrink: 0;"></div>
-                                            <span style="font-size: 13px; color: #2c3e50; font-weight: 600; flex: 1;">${fac.nombre}</span>
-                                            <span style="font-size: 18px; color: ${colorScheme.border}; font-weight: 800;">${fac.cantidad}</span>
+                                    return `
+                                        <div class="legend-item" style="--item-color: ${colorScheme.border};">
+                                            <div class="legend-color"></div>
+                                            <span class="legend-name">${fac.nombre}</span>
+                                            <span class="legend-value">${fac.cantidad}</span>
                                         </div>
                                     `;
-                                });
-                                legendaFacHTML += '</div>';
-
-                                const totalFacultades = facultadesData.reduce((sum, fac) => sum + fac.valor, 0);
-
-                                return legendaFacHTML + `
-                                    <div style="display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(135deg, #f0f4f8 0%, #ffffff 100%); border-radius: 12px; border: 2px solid #003865; width: 100%; max-width: 600px; margin: 0 auto;">
-                                        <div style="text-align: center;">
-                                            <div style="font-size: 48px; font-weight: 800; color: #003865;">${totalFacultades}</div>
-                                            <div style="font-size: 12px; color: #6c757d; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; margin-top: 5px;">Total Alumnos</div>
-                                        </div>
-                                    </div>
-                                `;
+                                }).join('');
                             })()}
                         </div>
-                        <div style="width: 100%; border-top: 2px solid #e9ecef; padding-top: 20px; margin-top: 20px;">
-                            <h3 style="text-align: center; color: #003865; font-size: 18px; font-weight: 600; margin-bottom: 20px;">Clases Bíblicas y Lecciones Actuales</h3>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px;">
-                                ${(() => {
-                                    const clasesBiblicas = obtenerClasesBiblicas(dataCache);
-                                    const leccionesActuales = obtenerLecciones(dataCache);
-                                    
-                                    let html = '';
-                                    for (let i = 0; i < clasesBiblicas.length; i++) {
-                                        const clase = clasesBiblicas[i];
-                                        const leccion = leccionesActuales[i] || '';
-                                        
-                                        if (clase || leccion) {
-                                            html += `
-                                                <div style="display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 12px; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 8px; border-left: 3px solid #0077cc; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                                                    <div style="display: flex; align-items: center; gap: 8px;">
-                                                        <span style="flex: 0 0 28px; width: 28px; height: 28px; background: linear-gradient(135deg, #0077cc 0%, #0099ff 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">${i + 1}</span>
-                                                        <span style="font-size: 13px; color: #2c3e50; font-weight: 600; flex: 1;">${clase || '—'}</span>
-                                                    </div>
-                                                    <div style="display: flex; align-items: center; padding: 6px 16px; background: linear-gradient(135deg, #003865 0%, #0077cc 100%); border-radius: 20px;">
-                                                        <span style="font-size: 12px; color: white; font-weight: 600; white-space: nowrap;">${leccion || '—'}</span>
-                                                    </div>
-                                                </div>
-                                            `;
-                                        }
-                                    }
-                                    return html;
-                                })()}
-                            </div>
+                        <div style="text-align: center; margin-top: 25px; background: linear-gradient(135deg, #f0f4f8 0%, #ffffff 100%); padding: 30px; border-radius: 16px; border: 3px solid #003865;">
+                            <div style="font-size: 48px; font-weight: 800; color: #003865;">${(() => {
+                                const facultadesData = obtenerFacultades(dataCache);
+                                return facultadesData.reduce((sum, fac) => sum + fac.valor, 0);
+                            })()}</div>
+                            <div style="font-size: 13px; color: #6c757d; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin-top: 8px;">Total Alumnos Bautizados</div>
                         </div>
-                        <div style="width: 100%; border-top: 2px solid #e9ecef; padding-top: 20px;">
-                            <h3 style="text-align: center; color: #003865; font-size: 18px; font-weight: 600; margin-bottom: 20px;">Docentes Participantes (${(() => obtenerDocentes(dataCache).length)()})</h3>
-                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
-                                ${(() => {
-                                    const docentes = obtenerDocentes(dataCache);
-                                    return docentes.map((docente, index) => `
-                                        <div style="display: flex; align-items: center; gap: 8px; padding: 10px; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 8px; border-left: 3px solid #003865; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                                            <span style="flex: 0 0 28px; width: 28px; height: 28px; background: linear-gradient(135deg, #003865 0%, #0077cc 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">${index + 1}</span>
-                                            <span style="font-size: 12px; color: #2c3e50; font-weight: 500; flex: 1; line-height: 1.4;">${docente.nombre}</span>
-                                        </div>
-                                    `).join('');
-                                })()}
-                            </div>
+                    </div>
+
+                    <div class="overview-section">
+                        <div class="section-header">
+                            <div class="section-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="section-title">Clases Bíblicas y Lecciones</div>
+                            <div class="section-count">${(() => obtenerClasesBiblicas(dataCache).filter(c => c).length)()} Clases</div>
+                        </div>
+                        <div class="clases-grid">
+                            ${(() => {
+                                const clasesBiblicas = obtenerClasesBiblicas(dataCache);
+                                const leccionesActuales = obtenerLecciones(dataCache);
+                                return clasesBiblicas.map((clase, i) => {
+                                    const leccion = leccionesActuales[i] || '';
+                                    if (clase || leccion) {
+                                        return `
+                                            <div class="clase-card">
+                                                <div class="clase-number">${i + 1}</div>
+                                                <div class="clase-name">${clase || '—'}</div>
+                                                <div class="clase-leccion">${leccion || '—'}</div>
+                                            </div>
+                                        `;
+                                    }
+                                    return '';
+                                }).join('');
+                            })()}
+                        </div>
+                    </div>
+
+                    <div class="overview-section">
+                        <div class="section-header">
+                            <div class="section-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                            <div class="section-title">Docentes Participantes</div>
+                            <div class="section-count">${(() => obtenerDocentes(dataCache).length)()} Docentes</div>
+                        </div>
+                        <div class="docentes-grid">
+                            ${(() => {
+                                const docentes = obtenerDocentes(dataCache);
+                                return docentes.map((docente, index) => `
+                                    <div class="docente-card">
+                                        <div class="docente-number">${index + 1}</div>
+                                        <div class="docente-name">${docente.nombre}</div>
+                                    </div>
+                                `).join('');
+                            })()}
                         </div>
                     </div>
                 `;
@@ -947,6 +1261,7 @@
                     box.innerHTML = `
                         <div class="chart-header">
                             <div class="chart-title">${esc.nombre}</div>
+                            <div class="chart-badge"><i class="fas fa-users"></i> ${esc.valor}</div>
                         </div>
                         <div class="chart-content">
                             <div class="chart-image-container">
@@ -954,12 +1269,12 @@
                             </div>
                             <div class="chart-value-display">
                                 <span class="chart-value-number">${esc.valor}</span>
+                                <span class="chart-value-label">Participantes</span>
                             </div>
                         </div>
                     `;
                     
                     grid.appendChild(box);
-
                     setTimeout(() => createChart(canvasId, esc.valor, esc.nombre, colorScheme), 50);
                 });
             }
@@ -967,21 +1282,37 @@
 
         function mostrarFacultad(facKey, event) {
             document.querySelectorAll('.faculty-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            event.target.closest('.faculty-btn').classList.add('active');
             currentFaculty = facKey;
             renderFaculty(facKey);
         }
 
         async function init() {
-            await loadData();
-            renderFaculty('INICIO');
-            setInterval(async () => {
-                await loadData();
-                renderFaculty(currentFaculty);
-            }, 60000);
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            
+            const success = await loadData();
+            
+            if (success) {
+                renderFaculty('INICIO');
+                
+                // Auto-actualización cada minuto
+                updateTimer = setInterval(async () => {
+                    await loadData(true);
+                    renderFaculty(currentFaculty);
+                }, UPDATE_INTERVAL);
+            }
+            
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+            }, 500);
         }
 
         window.onload = init;
+
+        // Limpiar timer al cerrar
+        window.onbeforeunload = () => {
+            if (updateTimer) clearInterval(updateTimer);
+        };
     </script>
 </body>
 </html>
