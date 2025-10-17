@@ -970,6 +970,9 @@
         ];
 
         const clasesPorEscuelaConfig = [
+            { filaNombre: 425, filaValor: 440 },
+            { filaNombre: 426, filaValor: 441 },
+            { filaNombre: 427, filaValor: 442 },
             { filaNombre: 428, filaValor: 443 },
             { filaNombre: 429, filaValor: 444 },
             { filaNombre: 430, filaValor: 445 },
@@ -978,21 +981,31 @@
             { filaNombre: 433, filaValor: 448 },
             { filaNombre: 434, filaValor: 449 },
             { filaNombre: 435, filaValor: 450 },
-            { filaNombre: 436, filaValor: 451 },
-            { filaNombre: 437, filaValor: 452 },
-            { filaNombre: 438, filaValor: 453 },
-            { filaNombre: 439, filaValor: 454 }
+            { filaNombre: 436, filaValor: 451 }
         ];
 
         const colorSchemes = [
-            { primary: 'rgba(0, 56, 101, 0.85)', secondary: 'rgba(0, 119, 204, 0.2)', border: 'rgba(0, 56, 101, 1)', dark: '#002d4d', light: 'rgba(0, 119, 204, 0.15)' },
-            { primary: 'rgba(16, 124, 16, 0.85)', secondary: 'rgba(76, 175, 80, 0.2)', border: 'rgba(16, 124, 16, 1)', dark: '#0a5f0a', light: 'rgba(76, 175, 80, 0.15)' },
-            { primary: 'rgba(156, 39, 176, 0.85)', secondary: 'rgba(186, 104, 200, 0.2)', border: 'rgba(156, 39, 176, 1)', dark: '#7b1fa2', light: 'rgba(186, 104, 200, 0.15)' },
-            { primary: 'rgba(230, 74, 25, 0.85)', secondary: 'rgba(255, 112, 67, 0.2)', border: 'rgba(230, 74, 25, 1)', dark: '#d84315', light: 'rgba(255, 112, 67, 0.15)' },
-            { primary: 'rgba(0, 121, 107, 0.85)', secondary: 'rgba(38, 166, 154, 0.2)', border: 'rgba(0, 121, 107, 1)', dark: '#00695c', light: 'rgba(38, 166, 154, 0.15)' },
-            { primary: 'rgba(245, 124, 0, 0.85)', secondary: 'rgba(255, 152, 0, 0.2)', border: 'rgba(245, 124, 0, 1)', dark: '#e65100', light: 'rgba(255, 152, 0, 0.15)' },
-            { primary: 'rgba(21, 101, 192, 0.85)', secondary: 'rgba(66, 165, 245, 0.2)', border: 'rgba(21, 101, 192, 1)', dark: '#0d47a1', light: 'rgba(66, 165, 245, 0.15)' },
-            { primary: 'rgba(194, 24, 91, 0.85)', secondary: 'rgba(236, 64, 122, 0.2)', border: 'rgba(194, 24, 91, 1)', dark: '#ad1457', light: 'rgba(236, 64, 122, 0.15)' }
+            { primary: 'rgba(66, 99, 133, 0.75)', secondary: 'rgba(100, 141, 174, 0.2)', border: 'rgba(66, 99, 133, 1)', dark: '#3d5a73', light: 'rgba(100, 141, 174, 0.15)', nombre: 'Administración' },
+            { primary: 'rgba(214, 119, 87, 0.75)', secondary: 'rgba(230, 150, 120, 0.2)', border: 'rgba(214, 119, 87, 1)', dark: '#c66e4d', light: 'rgba(230, 150, 120, 0.15)', nombre: 'Ingeniería Civil' },
+            { primary: 'rgba(102, 170, 106, 0.75)', secondary: 'rgba(140, 195, 143, 0.2)', border: 'rgba(102, 170, 106, 1)', dark: '#669e69', light: 'rgba(140, 195, 143, 0.15)', nombre: 'Contabilidad' },
+            { primary: 'rgba(216, 101, 132, 0.75)', secondary: 'rgba(230, 140, 165, 0.2)', border: 'rgba(216, 101, 132, 1)', dark: '#c75c85', light: 'rgba(230, 140, 165, 0.15)', nombre: 'Enfermería' },
+            { primary: 'rgba(156, 108, 168, 0.75)', secondary: 'rgba(186, 145, 195, 0.2)', border: 'rgba(156, 108, 168, 1)', dark: '#9a6ba8', light: 'rgba(186, 145, 195, 0.15)', nombre: 'Nutrición' },
+            { primary: 'rgba(230, 154, 92, 0.75)', secondary: 'rgba(242, 180, 130, 0.2)', border: 'rgba(230, 154, 92, 1)', dark: '#d1925a', light: 'rgba(242, 180, 130, 0.15)', nombre: 'Medicina' },
+            { primary: 'rgba(82, 157, 204, 0.75)', secondary: 'rgba(120, 180, 215, 0.2)', border: 'rgba(82, 157, 204, 1)', dark: '#5090b8', light: 'rgba(120, 180, 215, 0.15)', nombre: 'Sistemas' },
+            { primary: 'rgba(126, 102, 174, 0.75)', secondary: 'rgba(160, 140, 195, 0.2)', border: 'rgba(126, 102, 174, 1)', dark: '#7e66ae', light: 'rgba(160, 140, 195, 0.15)', nombre: 'Arquitectura' },
+            { primary: 'rgba(77, 148, 140, 0.75)', secondary: 'rgba(115, 175, 168, 0.2)', border: 'rgba(77, 148, 140, 1)', dark: '#4d8e87', light: 'rgba(115, 175, 168, 0.15)', nombre: 'Ambiental' },
+            { primary: 'rgba(140, 113, 102, 0.75)', secondary: 'rgba(170, 145, 135, 0.2)', border: 'rgba(140, 113, 102, 1)', dark: '#8c7166', light: 'rgba(170, 145, 135, 0.15)', nombre: 'Industrias' },
+            { primary: 'rgba(90, 142, 199, 0.75)', secondary: 'rgba(130, 170, 215, 0.2)', border: 'rgba(90, 142, 199, 1)', dark: '#5a8ec7', light: 'rgba(130, 170, 215, 0.15)', nombre: 'Educación' },
+            { primary: 'rgba(175, 180, 100, 0.75)', secondary: 'rgba(200, 205, 140, 0.2)', border: 'rgba(155, 160, 80, 1)', dark: '#9b9e50', light: 'rgba(200, 205, 140, 0.15)', nombre: 'Derecho' },
+            { primary: 'rgba(224, 122, 95, 0.75)', secondary: 'rgba(235, 155, 130, 0.2)', border: 'rgba(224, 122, 95, 1)', dark: '#d07a5f', light: 'rgba(235, 155, 130, 0.15)', nombre: 'Teología' },
+            { primary: 'rgba(120, 140, 153, 0.75)', secondary: 'rgba(155, 170, 180, 0.2)', border: 'rgba(120, 140, 153, 1)', dark: '#788c99', light: 'rgba(155, 170, 180, 0.15)', nombre: 'Psicología' },
+            { primary: 'rgba(217, 108, 100, 0.75)', secondary: 'rgba(230, 145, 138, 0.2)', border: 'rgba(217, 108, 100, 1)', dark: '#c76c64', light: 'rgba(230, 145, 138, 0.15)', nombre: 'Alimentos' },
+            { primary: 'rgba(77, 170, 189, 0.75)', secondary: 'rgba(115, 195, 210, 0.2)', border: 'rgba(77, 170, 189, 1)', dark: '#4daab d', light: 'rgba(115, 195, 210, 0.15)', nombre: 'Mecatrónica' },
+            { primary: 'rgba(140, 180, 108, 0.75)', secondary: 'rgba(170, 200, 145, 0.2)', border: 'rgba(140, 180, 108, 1)', dark: '#8cb46c', light: 'rgba(170, 200, 145, 0.15)', nombre: 'Agroindustrial' },
+            { primary: 'rgba(230, 180, 90, 0.75)', secondary: 'rgba(242, 205, 135, 0.2)', border: 'rgba(230, 180, 90, 1)', dark: '#d1b45a', light: 'rgba(242, 205, 135, 0.15)', nombre: 'Marketing' },
+            { primary: 'rgba(100, 115, 170, 0.75)', secondary: 'rgba(140, 150, 195, 0.2)', border: 'rgba(100, 115, 170, 1)', dark: '#6473aa', light: 'rgba(140, 150, 195, 0.15)', nombre: 'Comunicación' },
+            { primary: 'rgba(216, 101, 132, 0.75)', secondary: 'rgba(230, 140, 165, 0.2)', border: 'rgba(216, 101, 132, 1)', dark: '#d06584', light: 'rgba(230, 140, 165, 0.15)', nombre: 'Traducción' },
+            { primary: 'rgba(77, 140, 130, 0.75)', secondary: 'rgba(115, 170, 162, 0.2)', border: 'rgba(77, 140, 130, 1)', dark: '#4d8c82', light: 'rgba(115, 170, 162, 0.15)', nombre: 'Turismo' }
         ];
 
         const facultades = {
