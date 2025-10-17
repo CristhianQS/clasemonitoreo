@@ -579,11 +579,74 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             align-items: center;
             transition: all 0.3s;
+            position: relative;
+            cursor: pointer;
         }
 
         .clase-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .clase-tooltip {
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #003865 0%, #0077cc 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            min-width: 280px;
+            max-width: 400px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .clase-card:hover .clase-tooltip {
+            opacity: 1;
+            visibility: visible;
+            bottom: calc(100% + 15px);
+        }
+
+        .clase-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: #0077cc;
+        }
+
+        .tooltip-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 8px 0;
+        }
+
+        .tooltip-row:not(:last-child) {
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .tooltip-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255,255,255,0.8);
+            font-weight: 600;
+        }
+
+        .tooltip-value {
+            font-size: 13px;
+            font-weight: 500;
+            color: white;
+            line-height: 1.4;
         }
 
         .clase-number {
@@ -891,6 +954,8 @@
 
         const clasesBiblicasRango = { inicio: 149, fin: 211 };
         const leccionesActualesRango = { inicio: 215, fin: 277 };
+        const docentesLideresRango = { inicio: 295, fin: 359 };
+        const leccionActualRango = { inicio: 361, fin: 422 };
 
         const facultadesConfig = [
             { filaNombre: 281, filaValor: 288 },
@@ -949,6 +1014,30 @@
             for (let i = leccionesActualesRango.inicio; i <= leccionesActualesRango.fin; i++) {
                 if (dataCache[i - 1]?.[0]) {
                     lecciones.push(dataCache[i - 1][0].trim());
+                }
+            }
+            return lecciones;
+        }
+
+        function obtenerDocentesLideres(dataCache) {
+            const docentes = [];
+            for (let i = docentesLideresRango.inicio; i <= docentesLideresRango.fin; i++) {
+                if (dataCache[i - 1]?.[0]) {
+                    docentes.push(dataCache[i - 1][0].trim());
+                } else {
+                    docentes.push('');
+                }
+            }
+            return docentes;
+        }
+
+        function obtenerLeccionesActuales(dataCache) {
+            const lecciones = [];
+            for (let i = leccionActualRango.inicio; i <= leccionActualRango.fin; i++) {
+                if (dataCache[i - 1]?.[0]) {
+                    lecciones.push(dataCache[i - 1][0].trim());
+                } else {
+                    lecciones.push('');
                 }
             }
             return lecciones;
@@ -1199,11 +1288,25 @@
                         ${(() => {
                             const clasesBiblicas = obtenerClasesBiblicas(dataCache);
                             const leccionesActuales = obtenerLecciones(dataCache);
+                            const docentesLideres = obtenerDocentesLideres(dataCache);
+                            const leccionesActualesDetalle = obtenerLeccionesActuales(dataCache);
                             return clasesBiblicas.map((clase, i) => {
                                 const leccion = leccionesActuales[i] || '';
+                                const docente = docentesLideres[i] || 'No asignado';
+                                const leccionActual = leccionesActualesDetalle[i] || 'Sin lección';
                                 if (clase || leccion) {
                                     return `
                                         <div class="clase-card">
+                                            <div class="clase-tooltip">
+                                                <div class="tooltip-row">
+                                                    <div class="tooltip-label"><i class="fas fa-chalkboard-teacher"></i> Docente Líder</div>
+                                                    <div class="tooltip-value">${docente}</div>
+                                                </div>
+                                                <div class="tooltip-row">
+                                                    <div class="tooltip-label"><i class="fas fa-book-reader"></i> Lección Actual</div>
+                                                    <div class="tooltip-value">${leccionActual}</div>
+                                                </div>
+                                            </div>
                                             <div class="clase-number">${i + 1}</div>
                                             <div class="clase-name">${clase || '—'}</div>
                                             <div class="clase-leccion">${leccion || '—'}</div>
