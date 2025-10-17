@@ -969,6 +969,21 @@
             { filaNombre: 284, filaValor: 291 },
         ];
 
+        const clasesPorEscuelaConfig = [
+            { filaNombre: 425, filaValor: 440 },
+            { filaNombre: 426, filaValor: 441 },
+            { filaNombre: 427, filaValor: 442 },
+            { filaNombre: 428, filaValor: 443 },
+            { filaNombre: 429, filaValor: 444 },
+            { filaNombre: 430, filaValor: 445 },
+            { filaNombre: 431, filaValor: 446 },
+            { filaNombre: 432, filaValor: 447 },
+            { filaNombre: 433, filaValor: 448 },
+            { filaNombre: 434, filaValor: 449 },
+            { filaNombre: 435, filaValor: 450 },
+            { filaNombre: 436, filaValor: 451 }
+        ];
+
         const colorSchemes = [
             { primary: 'rgba(0, 56, 101, 0.85)', secondary: 'rgba(0, 119, 204, 0.2)', border: 'rgba(0, 56, 101, 1)', dark: '#002d4d', light: 'rgba(0, 119, 204, 0.15)' },
             { primary: 'rgba(16, 124, 16, 0.85)', secondary: 'rgba(76, 175, 80, 0.2)', border: 'rgba(16, 124, 16, 1)', dark: '#0a5f0a', light: 'rgba(76, 175, 80, 0.15)' },
@@ -1062,6 +1077,22 @@
                 }
             });
             return facultades;
+        }
+
+        function obtenerClasesPorEscuela(dataCache) {
+            const clases = [];
+            clasesPorEscuelaConfig.forEach(config => {
+                const nombre = dataCache[config.filaNombre - 1]?.[0]?.trim();
+                const cantidad = dataCache[config.filaValor - 1]?.[0]?.trim() || '0';
+                if (nombre && nombre !== '') {
+                    clases.push({
+                        nombre,
+                        cantidad,
+                        valor: parseFloat(cantidad) || 0
+                    });
+                }
+            });
+            return clases;
         }
 
         function updateHeaderStats() {
@@ -1285,6 +1316,44 @@
 
                 <div class="overview-section">
                     <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-school"></i></div>
+                        <div class="section-title">Clases Bíblicas por Escuela Profesional</div>
+                    </div>
+                    <div style="display: flex; gap: 40px; margin-bottom: 30px; flex-wrap: wrap; justify-content: center; align-items: flex-start;">
+                        <div style="flex: 0 0 450px; min-width: 350px; max-width: 450px;">
+                            <div style="background: white; border-radius: 16px; padding: 30px; border: 2px solid #e9ecef; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                                <canvas id="chart-clases-escuelas" style="max-height: 380px;"></canvas>
+                            </div>
+                            <div style="margin-top: 25px; text-align: center; background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%); padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(156,39,176,0.3);">
+                                <div style="font-size: 56px; font-weight: 800; color: white;">${(() => {
+                                    const clasesData = obtenerClasesPorEscuela(dataCache);
+                                    return clasesData.reduce((sum, cls) => sum + cls.valor, 0);
+                                })()}</div>
+                                <div style="font-size: 13px; color: rgba(255,255,255,0.9); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin-top: 8px;">Total Clases Bíblicas</div>
+                            </div>
+                        </div>
+                        <div style="flex: 1; min-width: 350px; max-width: 800px;">
+                            <div class="legend-grid">
+                                ${(() => {
+                                    const clasesData = obtenerClasesPorEscuela(dataCache);
+                                    return clasesData.map((cls, index) => {
+                                        const colorScheme = colorSchemes[index % colorSchemes.length];
+                                        return `
+                                            <div class="legend-item" style="--item-color: ${colorScheme.border};">
+                                                <div class="legend-color"></div>
+                                                <span class="legend-name">${cls.nombre}</span>
+                                                <span class="legend-value">${cls.cantidad}</span>
+                                            </div>
+                                        `;
+                                    }).join('');
+                                })()}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overview-section">
+                    <div class="section-header">
                         <div class="section-icon"><i class="fas fa-book-open"></i></div>
                         <div class="section-title">Clases Bíblicas y Lecciones</div>
                         <div class="section-count">${(() => obtenerClasesBiblicas(dataCache).filter(c => c).length)()} Clases</div>
@@ -1385,6 +1454,77 @@
                         cutout: '65%'
                     }
                 });
+
+                // Gráfica de Clases por Escuela
+                const ctxClases = document.getElementById('chart-clases-escuelas');
+                if (ctxClases) {
+                    const clasesData = obtenerClasesPorEscuela(dataCache);
+                    const labelsClases = clasesData.map(cls => cls.nombre);
+                    const valoresClases = clasesData.map(cls => cls.valor);
+                    const backgroundColorsClases = clasesData.map((_, i) => colorSchemes[i % colorSchemes.length].primary);
+                    const borderColorsClases = clasesData.map((_, i) => colorSchemes[i % colorSchemes.length].border);
+
+                    chartInstances['chart-clases-escuelas'] = new Chart(ctxClases, {
+                        type: 'bar',
+                        data: {
+                            labels: labelsClases,
+                            datasets: [{
+                                label: 'Clases Bíblicas',
+                                data: valoresClases,
+                                backgroundColor: backgroundColorsClases,
+                                borderColor: borderColorsClases,
+                                borderWidth: 2,
+                                borderRadius: 8
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                    padding: 12,
+                                    titleFont: { size: 14, weight: 'bold' },
+                                    bodyFont: { size: 13 },
+                                    callbacks: {
+                                        label: function(context) {
+                                            const value = context.parsed.y;
+                                            const total = valoresClases.reduce((a, b) => a + b, 0);
+                                            if (total > 0) {
+                                                const percentage = ((value / total) * 100).toFixed(1);
+                                                return `Clases: ${value} (${percentage}%)`;
+                                            }
+                                            return `Clases: ${value}`;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1,
+                                        font: { weight: 'bold' }
+                                    },
+                                    grid: {
+                                        color: 'rgba(0, 0, 0, 0.05)'
+                                    }
+                                },
+                                x: {
+                                    ticks: {
+                                        font: { weight: 'bold', size: 11 },
+                                        maxRotation: 45,
+                                        minRotation: 45
+                                    },
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
             }, 50);
         }
 
